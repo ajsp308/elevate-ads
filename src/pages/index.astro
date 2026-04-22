@@ -22,7 +22,7 @@ import '../styles/global.css';
     <!-- Hero Section -->
     <section id="hero" class="relative h-[300vh]">
       <div class="sticky top-0 h-screen w-full overflow-hidden">
-        <canvas id="hero-canvas" class="w-full h-full"></canvas>
+        <canvas id="hero-canvas" class="w-full h-full" style="image-rendering: auto;"></canvas>
       </div>
     </section>
 
@@ -157,19 +157,28 @@ import '../styles/global.css';
       let imagesLoaded = 0;
 
       function setCanvasSize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        ctx.scale(dpr, dpr);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
       }
 
       function drawFrame(index: number) {
         const img = images[index];
         if (!img || !img.complete) return;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        const scale = Math.max(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
+        const dpr = window.devicePixelRatio || 1;
+        const displayW = canvas.width / dpr;
+        const displayH = canvas.height / dpr;
+        ctx.clearRect(0, 0, displayW, displayH);
+        const scale = Math.max(displayW / img.naturalWidth, displayH / img.naturalHeight);
         const w = img.naturalWidth * scale;
         const h = img.naturalHeight * scale;
-        const x = (canvas.width - w) / 2;
-        const y = (canvas.height - h) / 2;
+        const x = (displayW - w) / 2;
+        const y = (displayH - h) / 2;
         ctx.drawImage(img, x, y, w, h);
       }
 
