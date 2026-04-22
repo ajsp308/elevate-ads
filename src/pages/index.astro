@@ -29,6 +29,7 @@ import '../styles/global.css';
           playsinline
           preload="auto"
           class="w-full h-full object-cover"
+          style="will-change: transform; transform: translateZ(0);"
         ></video>
       </div>
     </section>
@@ -164,7 +165,7 @@ import '../styles/global.css';
             trigger: '#hero',
             start: 'top top',
             end: 'bottom bottom',
-            scrub: true,
+            scrub: 1.5,
           },
         });
       });
