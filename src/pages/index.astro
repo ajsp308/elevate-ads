@@ -148,9 +148,11 @@ import '../styles/global.css';
       const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement;
       const ctx = canvas.getContext('2d')!;
 
-      const TOTAL_FRAMES = 161;
+      const FRAME_START = 37;
+      const FRAME_END   = 168;
+      const TOTAL_FRAMES = FRAME_END - FRAME_START + 1; // 132
       const PATTERN = (i: number) =>
-        `/INICIO1/ezgif-frame-${String(i).padStart(3, '0')}.jpg`;
+        `/INICIO/INICIO_${String(i).padStart(5, '0')}.jpg`;
 
       const images: HTMLImageElement[] = [];
       const frameObj = { frame: 0 };
@@ -158,9 +160,9 @@ import '../styles/global.css';
 
       function setCanvasSize() {
         const dpr = window.devicePixelRatio || 1;
-        canvas.width = window.innerWidth * dpr;
+        canvas.width  = window.innerWidth  * dpr;
         canvas.height = window.innerHeight * dpr;
-        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.width  = window.innerWidth  + 'px';
         canvas.style.height = window.innerHeight + 'px';
         ctx.scale(dpr, dpr);
         ctx.imageSmoothingEnabled = true;
@@ -171,11 +173,11 @@ import '../styles/global.css';
         const img = images[index];
         if (!img || !img.complete) return;
         const dpr = window.devicePixelRatio || 1;
-        const displayW = canvas.width / dpr;
+        const displayW = canvas.width  / dpr;
         const displayH = canvas.height / dpr;
         ctx.clearRect(0, 0, displayW, displayH);
         const scale = Math.max(displayW / img.naturalWidth, displayH / img.naturalHeight);
-        const w = img.naturalWidth * scale;
+        const w = img.naturalWidth  * scale;
         const h = img.naturalHeight * scale;
         const x = (displayW - w) / 2;
         const y = (displayH - h) / 2;
@@ -203,14 +205,14 @@ import '../styles/global.css';
       }
 
       function preloadImages() {
-        for (let i = 1; i <= TOTAL_FRAMES; i++) {
+        for (let i = FRAME_START; i <= FRAME_END; i++) {
           const img = new Image();
           img.src = PATTERN(i);
           img.onload = () => {
             imagesLoaded++;
             if (imagesLoaded === TOTAL_FRAMES) initAnimation();
           };
-          images[i - 1] = img;
+          images[i - FRAME_START] = img;
         }
       }
 
