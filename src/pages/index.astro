@@ -234,28 +234,20 @@ import '../styles/global.css';
         const dpr = window.devicePixelRatio || 1;
         const displayW = canvas.width  / dpr;
         const displayH = canvas.height / dpr;
-        ctx.clearRect(0, 0, displayW, displayH);
 
-        // object-fit: cover — escala para cubrir toda la pantalla sin deformar
-        const imgRatio    = img.naturalWidth / img.naturalHeight;
-        const canvasRatio = displayW / displayH;
-        let sw, sh, sx, sy;
-        if (imgRatio > canvasRatio) {
-          // imagen más ancha que el canvas: recortar lados
-          sh = img.naturalHeight;
-          sw = img.naturalHeight * canvasRatio;
-          sx = (img.naturalWidth - sw) / 2;
-          sy = 0;
-        } else {
-          // imagen más alta que el canvas: recortar arriba y abajo
-          sw = img.naturalWidth;
-          sh = img.naturalWidth / canvasRatio;
-          sx = 0;
-          sy = (img.naturalHeight - sh) / 2;
-        }
+        // fondo negro para espacios vacíos arriba/abajo
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, displayW, displayH);
+
+        // width-based scaling con margen de seguridad del 95%
+        const scale = (displayW / img.naturalWidth) * 0.95;
+        const w = img.naturalWidth  * scale;
+        const h = img.naturalHeight * scale;
+        const x = (displayW - w) / 2;       // centrado horizontal
+        const y = (displayH - h) / 2;       // centrado vertical
 
         ctx.filter = 'contrast(1.05) brightness(1.02)';
-        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, displayW, displayH);
+        ctx.drawImage(img, x, y, w, h);
         ctx.filter = 'none';
       }
 
