@@ -148,11 +148,12 @@ import '../styles/global.css';
       const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement;
       const ctx = canvas.getContext('2d')!;
 
-      const FRAME_START = 37;
-      const FRAME_END   = 168;
-      const TOTAL_FRAMES = FRAME_END - FRAME_START + 1; // 132
+      const FRAME_START  = 31;
+      const FRAME_END    = 105;
+      const TOTAL_FRAMES = FRAME_END - FRAME_START + 1; // 75
+      const CACHE_V      = '2';
       const PATTERN = (i: number) =>
-        `/INICIO/INICIO_${String(i).padStart(5, '0')}.jpg`;
+        `/INICIO/INICIO_${String(i).padStart(5, '0')}.jpg?v=${CACHE_V}`;
 
       const images: HTMLImageElement[] = [];
       const frameObj = { frame: 0 };
