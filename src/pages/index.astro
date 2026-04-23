@@ -203,13 +203,13 @@ import '../styles/global.css';
       const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement;
       const ctx = canvas.getContext('2d')!;
 
-      const FRAME_START  = 31;
-      const FRAME_END    = 105;
-      const TOTAL_FRAMES = FRAME_END - FRAME_START + 1; // 75
-      const CACHE_V      = '2';
-      const PATTERN = (i: number) =>
-        `/INICIO/INICIO_${String(i).padStart(5, '0')}.jpg?v=${CACHE_V}`;
+      const isMobile = window.innerWidth < 768;
 
+      const DESKTOP = { start: 31, end: 105, pattern: (i: number) => `/INICIO/INICIO_${String(i).padStart(5, '0')}.jpg?v=2` };
+      const MOBILE  = { start: 0,  end: 90,  pattern: (i: number) => `/MOVIL/MOVIL_${String(i).padStart(5, '0')}.jpg?v=1` };
+      const CONFIG  = isMobile ? MOBILE : DESKTOP;
+
+      const TOTAL_FRAMES = CONFIG.end - CONFIG.start + 1;
       const images: HTMLImageElement[] = [];
       const frameObj = { frame: 0 };
       let imagesLoaded = 0;
@@ -261,14 +261,14 @@ import '../styles/global.css';
       }
 
       function preloadImages() {
-        for (let i = FRAME_START; i <= FRAME_END; i++) {
+        for (let i = CONFIG.start; i <= CONFIG.end; i++) {
           const img = new Image();
-          img.src = PATTERN(i);
+          img.src = CONFIG.pattern(i);
           img.onload = () => {
             imagesLoaded++;
             if (imagesLoaded === TOTAL_FRAMES) initAnimation();
           };
-          images[i - FRAME_START] = img;
+          images[i - CONFIG.start] = img;
         }
       }
 
