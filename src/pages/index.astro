@@ -27,6 +27,9 @@ import '../styles/global.css';
     <section id="hero" class="relative h-[300vh]">
       <div class="sticky top-0 h-screen w-full overflow-hidden">
         <canvas id="hero-canvas" class="w-full h-full" style="image-rendering: auto;"></canvas>
+        <!-- Gradientes de transición superior e inferior -->
+        <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black to-transparent pointer-events-none"></div>
+        <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
       </div>
     </section>
 
@@ -232,12 +235,28 @@ import '../styles/global.css';
         const displayW = canvas.width  / dpr;
         const displayH = canvas.height / dpr;
         ctx.clearRect(0, 0, displayW, displayH);
-        const scale = Math.max(displayW / img.naturalWidth, displayH / img.naturalHeight);
-        const w = img.naturalWidth  * scale;
-        const h = img.naturalHeight * scale;
-        const x = (displayW - w) / 2;
-        const y = (displayH - h) / 2;
-        ctx.drawImage(img, x, y, w, h);
+
+        // object-fit: cover — escala para cubrir toda la pantalla sin deformar
+        const imgRatio    = img.naturalWidth / img.naturalHeight;
+        const canvasRatio = displayW / displayH;
+        let sw, sh, sx, sy;
+        if (imgRatio > canvasRatio) {
+          // imagen más ancha que el canvas: recortar lados
+          sh = img.naturalHeight;
+          sw = img.naturalHeight * canvasRatio;
+          sx = (img.naturalWidth - sw) / 2;
+          sy = 0;
+        } else {
+          // imagen más alta que el canvas: recortar arriba y abajo
+          sw = img.naturalWidth;
+          sh = img.naturalWidth / canvasRatio;
+          sx = 0;
+          sy = (img.naturalHeight - sh) / 2;
+        }
+
+        ctx.filter = 'contrast(1.05) brightness(1.02)';
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, displayW, displayH);
+        ctx.filter = 'none';
       }
 
       function initAnimation() {
