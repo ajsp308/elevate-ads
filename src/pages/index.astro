@@ -39,15 +39,20 @@ import '../styles/global.css';
       <!-- Cards Grid -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
 
-        <!-- BRONZE -->
-        <div class="bg-white rounded-2xl p-8 flex flex-col gap-6 shadow-lg">
-          <div>
-            <h2 class="text-2xl font-extrabold text-blue-600 tracking-widest uppercase">Basic</h2>
-            <p class="text-4xl font-bold text-zinc-900 mt-2">€349 <span class="text-lg font-medium text-zinc-500">/ mes</span></p>
-            <p class="text-purple-600 font-semibold mt-1">Iniciante</p>
+        <!-- BASIC -->
+        <div class="bg-[#0f1115]/80 backdrop-blur-2xl border border-blue-500/20 rounded-2xl p-8 flex flex-col gap-6">
+          <!-- Icon -->
+          <div class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
           </div>
-
-          <ul class="flex flex-col gap-3 text-zinc-700 text-sm">
+          <div>
+            <h2 class="text-2xl font-extrabold text-blue-400 tracking-widest uppercase">Basic</h2>
+            <p class="text-4xl font-bold text-white mt-2">€349 <span class="text-lg font-medium text-gray-400">/ mes</span></p>
+            <p class="text-blue-400 font-semibold mt-1">Iniciante</p>
+          </div>
+          <ul class="flex flex-col gap-3 text-sm">
             {[
               "4 Publicaciones en Redes Sociales",
               "1 Reel Corto",
@@ -56,34 +61,39 @@ import '../styles/global.css';
               "Reporte Mensual",
               "Planificación de Contenido",
             ].map((item) => (
-              <li class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-blue-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
+              <li class="flex items-center gap-3 text-gray-300">
+                <span class="w-5 h-5 rounded-full border border-blue-400 flex items-center justify-center shrink-0">
+                  <svg class="w-3 h-3 text-blue-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
                 {item}
               </li>
             ))}
           </ul>
-
-          <button class="mt-auto w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors">
-            Comenzar
+          <button class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-blue-700 to-blue-500 hover:brightness-110 text-white font-semibold transition-all flex items-center justify-center gap-2">
+            Comenzar <span>→</span>
           </button>
         </div>
 
-        <!-- SILVER (Most Popular) -->
-        <div class="relative bg-white rounded-2xl p-8 flex flex-col gap-6 shadow-xl ring-2 ring-gray-400">
+        <!-- STANDARD (Most Popular) -->
+        <div class="relative bg-[#0f1115]/80 backdrop-blur-2xl border-2 border-[#10b981] rounded-2xl p-8 flex flex-col gap-6 shadow-[0_0_25px_rgba(16,185,129,0.4)]">
           <!-- Badge -->
-          <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gray-500 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap">
-            Más Popular
+          <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#10b981] text-black text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap">
+            MÁS POPULAR
           </span>
-
-          <div>
-            <h2 class="text-2xl font-extrabold text-gray-400 tracking-widest uppercase">Standard</h2>
-            <p class="text-4xl font-bold text-zinc-900 mt-2">€799 <span class="text-lg font-medium text-zinc-500">/ mes</span></p>
-            <p class="text-purple-600 font-semibold mt-1">Plus</p>
+          <!-- Icon -->
+          <div class="w-12 h-12 rounded-full bg-[#10b981]/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-[#10b981]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+            </svg>
           </div>
-
-          <ul class="flex flex-col gap-3 text-zinc-700 text-sm">
+          <div>
+            <h2 class="text-2xl font-extrabold text-[#10b981] tracking-widest uppercase">Standard</h2>
+            <p class="text-4xl font-bold text-white mt-2">€799 <span class="text-lg font-medium text-gray-400">/ mes</span></p>
+            <p class="text-[#10b981] font-semibold mt-1">Plus</p>
+          </div>
+          <ul class="flex flex-col gap-3 text-sm">
             {[
               "8 Publicaciones en Redes Sociales",
               "2 Reels Profesionales",
@@ -92,29 +102,35 @@ import '../styles/global.css';
               "Reporte Mensual",
               "Planificación de Contenido",
             ].map((item) => (
-              <li class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
+              <li class="flex items-center gap-3 text-gray-300">
+                <span class="w-5 h-5 rounded-full border border-[#10b981] flex items-center justify-center shrink-0">
+                  <svg class="w-3 h-3 text-[#10b981]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
                 {item}
               </li>
             ))}
           </ul>
-
-          <button class="mt-auto w-full py-3 rounded-xl bg-gray-400 hover:bg-gray-500 text-white font-semibold transition-colors">
-            Comenzar
+          <button class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#10b981] to-[#34d399] hover:brightness-110 text-white font-semibold transition-all flex items-center justify-center gap-2">
+            Comenzar <span>→</span>
           </button>
         </div>
 
-        <!-- GOLD -->
-        <div class="bg-white rounded-2xl p-8 flex flex-col gap-6 shadow-lg">
-          <div>
-            <h2 class="text-2xl font-extrabold text-yellow-500 tracking-widest uppercase">Premium</h2>
-            <p class="text-4xl font-bold text-zinc-900 mt-2">€1299 <span class="text-lg font-medium text-zinc-500">/ mes</span></p>
-            <p class="text-purple-600 font-semibold mt-1">Pro</p>
+        <!-- PREMIUM -->
+        <div class="bg-[#0f1115]/80 backdrop-blur-2xl border border-amber-500/20 rounded-2xl p-8 flex flex-col gap-6">
+          <!-- Icon -->
+          <div class="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 3l1.5 4.5L12 5l5.5 2.5L19 3l-1 6H6L5 3zM6 9h12v2a6 6 0 01-12 0V9zM9 21h6M12 19v2" />
+            </svg>
           </div>
-
-          <ul class="flex flex-col gap-3 text-zinc-700 text-sm">
+          <div>
+            <h2 class="text-2xl font-extrabold text-amber-400 tracking-widest uppercase">Premium</h2>
+            <p class="text-4xl font-bold text-white mt-2">€1299 <span class="text-lg font-medium text-gray-400">/ mes</span></p>
+            <p class="text-amber-400 font-semibold mt-1">Pro</p>
+          </div>
+          <ul class="flex flex-col gap-3 text-sm">
             {[
               "12 Publicaciones en Redes Sociales",
               "2 Reels Pro + 1 Reel con IA",
@@ -122,21 +138,51 @@ import '../styles/global.css';
               "Gestión de Anuncios",
               "Reporte y Planificación Mensual",
             ].map((item) => (
-              <li class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-yellow-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
+              <li class="flex items-center gap-3 text-gray-300">
+                <span class="w-5 h-5 rounded-full border border-amber-400 flex items-center justify-center shrink-0">
+                  <svg class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
                 {item}
               </li>
             ))}
           </ul>
-
-          <button class="mt-auto w-full py-3 rounded-xl bg-yellow-500 hover:bg-yellow-600 text-white font-semibold transition-colors">
-            Comenzar
+          <button class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#d97706] to-[#fbbf24] hover:brightness-110 text-white font-semibold transition-all flex items-center justify-center gap-2">
+            Comenzar <span>→</span>
           </button>
         </div>
 
       </div>
+
+      <!-- Barra de Garantías -->
+      <div class="max-w-6xl mx-auto mt-12 bg-white/5 border border-white/10 rounded-2xl px-8 py-5 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div class="flex flex-col items-center gap-2">
+          <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="text-gray-300 text-xs font-medium">Sin permanencia</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+          </svg>
+          <span class="text-gray-300 text-xs font-medium">Pago seguro</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+          </svg>
+          <span class="text-gray-300 text-xs font-medium">Soporte</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+          </svg>
+          <span class="text-gray-300 text-xs font-medium">Resultados</span>
+        </div>
+      </div>
+
     </section>
 
     <script>
