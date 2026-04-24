@@ -18,9 +18,13 @@ import Footer from '../components/Footer.astro';
     <style>
       html, body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
 
-      /* En móvil el hero de escritorio no se muestra */
-      @media (max-width: 767px) {
+      @media (min-width: 768px) { #hero-mobile { display: none !important; } }
+      @media (max-width: 767px)  {
         #hero { display: none !important; }
+        html, body { margin: 0; padding: 0; overflow-x: hidden; }
+        #hero-mobile { margin: 0; padding: 0; }
+        #hero-mobile-sticky { margin: 0; padding: 0; }
+        #hero-canvas-mobile { display: block; margin: 0; padding: 0; }
       }
     </style>
   </head>
@@ -33,6 +37,15 @@ import Footer from '../components/Footer.astro';
         <!-- Gradientes de transición superior e inferior -->
         <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black to-transparent pointer-events-none"></div>
         <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
+      </div>
+    </section>
+
+    <!-- Hero Móvil — solo < 768px — frames MOVIL_00000 a MOVIL_00089 -->
+    <section id="hero-mobile" style="position:relative;height:300dvh;margin:0;padding:0;">
+      <div id="hero-mobile-sticky" style="position:sticky;top:0;width:100%;height:100dvh;overflow:hidden;">
+        <canvas id="hero-canvas-mobile" style="width:100%;height:100%;image-rendering:auto;"></canvas>
+        <div style="position:absolute;inset-x:0;top:0;height:6rem;background:linear-gradient(to bottom,#000,transparent);pointer-events:none;"></div>
+        <div style="position:absolute;inset-x:0;bottom:0;height:6rem;background:linear-gradient(to top,#000,transparent);pointer-events:none;"></div>
       </div>
     </section>
 
@@ -300,6 +313,90 @@ import Footer from '../components/Footer.astro';
           setCanvasSize();
           drawFrame(Math.round(frameObj.frame));
         });
+      }
+    </script>
+
+    <script>
+      if (window.innerWidth < 768) {
+        const { gsap } = await import('gsap');
+        const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+        gsap.registerPlugin(ScrollTrigger);
+
+        const canvas = document.getElementById('hero-canvas-mobile') as HTMLCanvasElement;
+        const ctx = canvas.getContext('2d')!;
+
+        const START = 0, END = 89;          // MOVIL_00000 → MOVIL_00089
+        const TOTAL  = END - START + 1;     // 90 frames
+        const QUICK  = 10;
+        const url = (i: number) => `/MOVIL/MOVIL_${String(i).padStart(5, '0')}.jpg`;
+
+        const imgs: HTMLImageElement[] = new Array(TOTAL);
+        const frameObj = { f: 0 };
+        let ready = false;
+
+        function resize() {
+          const dpr = window.devicePixelRatio || 1;
+          const W = window.innerWidth;
+          const H = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+          canvas.width  = W * dpr;
+          canvas.height = H * dpr;
+          canvas.style.width  = W + 'px';
+          canvas.style.height = H + 'px';
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+        }
+
+        function draw(idx: number) {
+          const img = imgs[idx];
+          if (!img?.complete) return;
+          const dpr = window.devicePixelRatio || 1;
+          const W = canvas.width / dpr;
+          const H = canvas.height / dpr;
+          ctx.fillStyle = '#000';
+          ctx.fillRect(0, 0, W, H);
+          const scale = Math.max(W / img.naturalWidth, H / img.naturalHeight);
+          const w = img.naturalWidth  * scale;
+          const h = img.naturalHeight * scale;
+          ctx.drawImage(img, (W - w) / 2, 0, w, h);
+        }
+
+        function init() {
+          if (ready) return;
+          ready = true;
+          draw(0);
+          gsap.to(frameObj, {
+            f: TOTAL - 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '#hero-mobile',
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: 0.5,
+              onUpdate: (s) => draw(Math.round(s.progress * (TOTAL - 1))),
+            },
+          });
+        }
+
+        function preload() {
+          let n = 0;
+          for (let i = START; i < START + QUICK; i++) {
+            const img = new Image();
+            (img as any).fetchpriority = 'high';
+            img.src = url(i);
+            img.onload = () => { if (++n === 1) draw(0); if (n === QUICK) init(); };
+            imgs[i] = img;
+          }
+          for (let i = START + QUICK; i <= END; i++) {
+            const img = new Image();
+            img.src = url(i);
+            imgs[i] = img;
+          }
+        }
+
+        resize();
+        preload();
+        window.addEventListener('resize', () => { resize(); draw(Math.round(frameObj.f)); });
       }
     </script>
 
