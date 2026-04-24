@@ -1,0 +1,209 @@
+---
+import '../styles/global.css';
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contacto — Elevate Ads</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: #000; }
+    </style>
+  </head>
+  <body class="min-h-screen bg-black text-white flex items-center justify-center px-4 py-16">
+
+    <div class="w-full max-w-lg">
+
+      <!-- Logo -->
+      <a href="/" class="block text-center mb-10 font-orbitron text-xl font-bold tracking-widest text-white opacity-70 hover:opacity-100 transition-opacity">
+        ELEVATE
+      </a>
+
+      <!-- Formulario -->
+      <div id="form-container">
+        <div id="plan-header" class="mb-8 text-center"></div>
+
+        <form id="contact-form" class="flex flex-col gap-5" novalidate>
+          <input type="hidden" name="plan" id="hidden-plan" />
+
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Nombre Completo</label>
+            <input
+              type="text"
+              name="nombre"
+              required
+              placeholder="Tu nombre completo"
+              class="bg-white/5 border rounded-xl px-4 py-3 text-white placeholder-slate-500 outline-none focus:ring-2 transition-all"
+              id="input-nombre"
+            />
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-slate-400 uppercase tracking-wider">WhatsApp</label>
+            <input
+              type="tel"
+              name="whatsapp"
+              required
+              placeholder="+34 600 000 000"
+              class="bg-white/5 border rounded-xl px-4 py-3 text-white placeholder-slate-500 outline-none focus:ring-2 transition-all"
+              id="input-whatsapp"
+            />
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Web o Instagram actual</label>
+            <input
+              type="text"
+              name="web_instagram"
+              required
+              placeholder="https:// o @tuusuario"
+              class="bg-white/5 border rounded-xl px-4 py-3 text-white placeholder-slate-500 outline-none focus:ring-2 transition-all"
+              id="input-web"
+            />
+          </div>
+
+          <button
+            type="submit"
+            id="submit-btn"
+            class="w-full py-4 rounded-xl font-bold text-base text-white tracking-wide transition-all hover:brightness-110 mt-2"
+          >
+            Enviar Solicitud →
+          </button>
+
+          <p id="error-msg" class="text-red-400 text-sm text-center hidden">Por favor completa todos los campos correctamente.</p>
+        </form>
+      </div>
+
+      <!-- Pantalla de éxito -->
+      <div id="success-screen" class="hidden text-center flex flex-col items-center gap-6">
+        <div id="success-icon" class="w-20 h-20 rounded-full flex items-center justify-center mx-auto">
+          <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h2 id="success-title" class="font-orbitron text-3xl font-black tracking-widest uppercase">¡SOLICITUD RECIBIDA!</h2>
+        <p class="text-slate-300 text-base leading-relaxed max-w-md">
+          Un estratega de <span class="text-white font-bold">ELEVATE</span> ha comenzado a auditar tu presencia digital.
+          Te contactaremos por WhatsApp en menos de 24 horas para presentarte la hoja de ruta de tu plan.
+        </p>
+        <a href="/" class="mt-4 px-8 py-3 rounded-xl border border-white/20 text-white font-semibold hover:bg-white/10 transition-all">
+          Volver al Inicio
+        </a>
+      </div>
+
+    </div>
+
+    <script>
+      const PLANS: Record<string, { label: string; color: string; gradient: string; ring: string; bg: string }> = {
+        basic: {
+          label: 'Has seleccionado el Plan Basic',
+          color: '#3b82f6',
+          gradient: 'linear-gradient(to right, #1d4ed8, #3b82f6)',
+          ring: 'rgba(59,130,246,0.5)',
+          bg: 'rgba(59,130,246,0.15)',
+        },
+        standard: {
+          label: 'Has seleccionado el Plan Standard',
+          color: '#10b981',
+          gradient: 'linear-gradient(to right, #10b981, #34d399)',
+          ring: 'rgba(16,185,129,0.5)',
+          bg: 'rgba(16,185,129,0.15)',
+        },
+        premium: {
+          label: 'Has seleccionado el Plan Premium',
+          color: '#f59e0b',
+          gradient: 'linear-gradient(to right, #d97706, #f59e0b)',
+          ring: 'rgba(245,158,11,0.5)',
+          bg: 'rgba(245,158,11,0.15)',
+        },
+      };
+
+      const params = new URLSearchParams(window.location.search);
+      const planKey = params.get('plan') || 'basic';
+      const plan = PLANS[planKey] || PLANS.basic;
+
+      // Rellenar campo oculto
+      (document.getElementById('hidden-plan') as HTMLInputElement).value = planKey;
+
+      // Header dinámico
+      document.getElementById('plan-header')!.innerHTML = `
+        <p class="text-sm font-semibold uppercase tracking-widest mb-2" style="color:${plan.color}">${plan.label}</p>
+        <h1 class="font-orbitron text-2xl md:text-3xl font-black text-white leading-tight">
+          Comencemos a escalar<br/>tu negocio
+        </h1>
+      `;
+
+      // Estilos dinámicos en inputs y botón
+      const inputs = document.querySelectorAll('input[type="text"], input[type="tel"]') as NodeListOf<HTMLInputElement>;
+      inputs.forEach(input => {
+        input.style.borderColor = `${plan.color}33`;
+        input.addEventListener('focus', () => {
+          input.style.borderColor = plan.color;
+          input.style.boxShadow = `0 0 0 3px ${plan.ring}`;
+        });
+        input.addEventListener('blur', () => {
+          input.style.borderColor = `${plan.color}33`;
+          input.style.boxShadow = 'none';
+        });
+      });
+
+      const btn = document.getElementById('submit-btn') as HTMLButtonElement;
+      btn.style.background = plan.gradient;
+
+      // Envío del formulario
+      const form = document.getElementById('contact-form') as HTMLFormElement;
+      const errorMsg = document.getElementById('error-msg')!;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorMsg.classList.add('hidden');
+
+        const nombre = (document.getElementById('input-nombre') as HTMLInputElement).value.trim();
+        const whatsapp = (document.getElementById('input-whatsapp') as HTMLInputElement).value.trim();
+        const web = (document.getElementById('input-web') as HTMLInputElement).value.trim();
+
+        if (!nombre || !whatsapp || !web) {
+          errorMsg.classList.remove('hidden');
+          return;
+        }
+
+        btn.textContent = 'Enviando...';
+        btn.disabled = true;
+
+        try {
+          const res = await fetch('https://formspree.io/f/xpwzrjkv', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ nombre, whatsapp, web_instagram: web, plan: planKey }),
+          });
+
+          if (res.ok) {
+            document.getElementById('form-container')!.classList.add('hidden');
+            const success = document.getElementById('success-screen')!;
+            success.classList.remove('hidden');
+            success.classList.add('flex');
+
+            const icon = document.getElementById('success-icon')!;
+            icon.style.background = plan.gradient;
+
+            const title = document.getElementById('success-title')!;
+            title.style.color = plan.color;
+          } else {
+            throw new Error('Error en el envío');
+          }
+        } catch {
+          btn.textContent = 'Enviar Solicitud →';
+          btn.disabled = false;
+          errorMsg.textContent = 'Hubo un error al enviar. Inténtalo de nuevo.';
+          errorMsg.classList.remove('hidden');
+        }
+      });
+    </script>
+
+  </body>
+</html>
