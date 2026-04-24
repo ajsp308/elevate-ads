@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Footer from '../components/Footer.astro';
 ---
 
 <html lang="es">
@@ -15,8 +16,9 @@ import '../styles/global.css';
       body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: #000; }
     </style>
   </head>
-  <body class="min-h-screen bg-black text-white flex items-center justify-center px-4 py-16">
+  <body class="min-h-screen bg-black text-white flex flex-col">
 
+    <div class="flex-1 flex items-center justify-center px-4 py-16">
     <div class="w-full max-w-lg">
 
       <!-- Logo -->
@@ -97,6 +99,9 @@ import '../styles/global.css';
       </div>
 
     </div>
+    </div>
+
+    <Footer />
 
     <script>
       const PLANS: Record<string, { label: string; color: string; gradient: string; ring: string; bg: string }> = {
