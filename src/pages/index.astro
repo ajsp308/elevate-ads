@@ -15,13 +15,42 @@ import Footer from '../components/Footer.astro';
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
-    <style>body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; }</style>
+    <style>
+      html, body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+
+      /* ── Móvil: anclaje superior absoluto ── */
+      @media (max-width: 767px) {
+        html, body {
+          margin-top: 0 !important;
+          padding-top: 0 !important;
+          overflow-x: hidden;
+        }
+        #hero {
+          margin-top: 0 !important;
+          padding-top: 0 !important;
+        }
+        #hero-sticky {
+          top: 0 !important;
+          margin-top: 0 !important;
+          padding-top: 0 !important;
+        }
+        #hero-canvas {
+          display: block !important;
+          top: 0 !important;
+          left: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          /* object-fit/position no aplica a canvas: el posicionamiento
+             real lo gestiona drawFrame() con cover + y=0 en JS */
+        }
+      }
+    </style>
   </head>
   <body class="bg-zinc-900 min-h-screen m-0 p-0">
 
     <!-- Hero Section -->
     <section id="hero" class="relative h-[300dvh]" style="margin-top:0;padding-top:0;">
-      <div class="sticky top-0 w-full overflow-hidden" style="top:0;height:100dvh;">
+      <div id="hero-sticky" class="sticky top-0 w-full overflow-hidden" style="top:0;margin-top:0;padding-top:0;height:100dvh;">
         <canvas id="hero-canvas" style="display:block;width:100%;height:100%;image-rendering:auto;margin:0;padding:0;"></canvas>
         <!-- Gradientes de transición superior e inferior -->
         <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black to-transparent pointer-events-none"></div>
@@ -219,11 +248,16 @@ import Footer from '../components/Footer.astro';
       function setCanvasSize() {
         const dpr = window.devicePixelRatio || 1;
         const W = window.innerWidth;
-        const H = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+        // En móvil usamos visualViewport para respetar la barra del navegador
+        const H = (isMobile && window.visualViewport)
+          ? window.visualViewport.height
+          : window.innerHeight;
         canvas.width  = W * dpr;
         canvas.height = H * dpr;
         canvas.style.width  = W + 'px';
         canvas.style.height = H + 'px';
+        // Reescala el contexto 2D limpiamente en cada resize
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.scale(dpr, dpr);
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
