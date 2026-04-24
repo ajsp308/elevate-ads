@@ -343,10 +343,10 @@ import Footer from '../components/Footer.astro';
         const canvas = document.getElementById('hero-canvas-mobile') as HTMLCanvasElement;
         const ctx = canvas.getContext('2d')!;
 
-        const START = 31, END = 105;
-        const TOTAL_FRAMES = END - START + 1; // 75 frames — carpeta /INICIO/
+        const START = 0, END = 89;
+        const TOTAL_FRAMES = END - START + 1; // 90 frames — carpeta /MOVIL/
         const QUICK_FRAMES = 10;
-        const pattern = (i: number) => `/INICIO/INICIO_${String(i).padStart(5, '0')}.jpg`;
+        const pattern = (i: number) => `/MOVIL/MOVIL_${String(i).padStart(5, '0')}.jpg`;
 
         const images: HTMLImageElement[] = new Array(TOTAL_FRAMES);
         const frameObj = { frame: 0 };
