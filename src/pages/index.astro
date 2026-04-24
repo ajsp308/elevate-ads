@@ -18,9 +18,30 @@ import Footer from '../components/Footer.astro';
     <style>
       html, body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
 
-      /* La sección hero (animación) solo existe en desktop */
+      /* Desktop: oculta hero móvil */
+      @media (min-width: 768px) {
+        #hero-mobile { display: none !important; }
+      }
+
+      /* Móvil: oculta hero desktop, ancla hero móvil al pixel 0 */
       @media (max-width: 767px) {
         #hero { display: none !important; }
+        #hero-mobile {
+          display: block;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        #hero-mobile-sticky {
+          position: sticky;
+          top: 0;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        #hero-canvas-mobile {
+          display: block !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
       }
     </style>
   </head>
@@ -33,6 +54,15 @@ import Footer from '../components/Footer.astro';
         <!-- Gradientes de transición superior e inferior -->
         <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black to-transparent pointer-events-none"></div>
         <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
+      </div>
+    </section>
+
+    <!-- Hero Section Mobile (solo < 768px) -->
+    <section id="hero-mobile" style="position:relative;height:300dvh;margin:0;padding:0;">
+      <div id="hero-mobile-sticky" style="top:0;width:100%;height:100dvh;overflow:hidden;">
+        <canvas id="hero-canvas-mobile" style="width:100%;height:100%;image-rendering:auto;"></canvas>
+        <div style="position:absolute;inset-x:0;top:0;height:6rem;background:linear-gradient(to bottom,#000,transparent);pointer-events:none;"></div>
+        <div style="position:absolute;inset-x:0;bottom:0;height:6rem;background:linear-gradient(to top,#000,transparent);pointer-events:none;"></div>
       </div>
     </section>
 
@@ -286,6 +316,108 @@ import Footer from '../components/Footer.astro';
             };
             images[i - START] = img;
           }
+          for (let i = START + QUICK_FRAMES; i <= END; i++) {
+            const img = new Image();
+            img.src = pattern(i);
+            images[i - START] = img;
+          }
+        }
+
+        setCanvasSize();
+        preloadImages();
+
+        window.addEventListener('resize', () => {
+          setCanvasSize();
+          drawFrame(Math.round(frameObj.frame));
+        });
+      }
+    </script>
+
+    <!-- Script exclusivo para animación móvil (< 768px) -->
+    <script>
+      if (window.innerWidth < 768) {
+        const { gsap } = await import('gsap');
+        const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+        gsap.registerPlugin(ScrollTrigger);
+
+        const canvas = document.getElementById('hero-canvas-mobile') as HTMLCanvasElement;
+        const ctx = canvas.getContext('2d')!;
+
+        const START = 0, END = 90;
+        const TOTAL_FRAMES = END - START + 1; // 91 frames
+        const QUICK_FRAMES = 10;
+        const pattern = (i: number) => `/MOVIL/MOVIL_${String(i).padStart(5, '0')}.jpg`;
+
+        const images: HTMLImageElement[] = new Array(TOTAL_FRAMES);
+        const frameObj = { frame: 0 };
+        let animationReady = false;
+
+        function setCanvasSize() {
+          const dpr = window.devicePixelRatio || 1;
+          const W = window.innerWidth;
+          const H = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+          canvas.width  = W * dpr;
+          canvas.height = H * dpr;
+          canvas.style.width  = W + 'px';
+          canvas.style.height = H + 'px';
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
+          ctx.scale(dpr, dpr);
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+        }
+
+        function drawFrame(index: number) {
+          const img = images[index];
+          if (!img || !img.complete) return;
+          const dpr = window.devicePixelRatio || 1;
+          const displayW = canvas.width / dpr;
+          const displayH = canvas.height / dpr;
+          ctx.fillStyle = '#000';
+          ctx.fillRect(0, 0, displayW, displayH);
+          // Cover + anchor top: 1054×1492 → sin franja negra arriba
+          const scale = Math.max(displayW / img.naturalWidth, displayH / img.naturalHeight);
+          const w = img.naturalWidth  * scale;
+          const h = img.naturalHeight * scale;
+          const x = (displayW - w) / 2;
+          ctx.filter = 'contrast(1.05) brightness(1.02)';
+          ctx.drawImage(img, x, 0, w, h); // y=0 → anclado al pixel 0
+          ctx.filter = 'none';
+        }
+
+        function initAnimation() {
+          if (animationReady) return;
+          animationReady = true;
+          drawFrame(0);
+          gsap.to(frameObj, {
+            frame: TOTAL_FRAMES - 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '#hero-mobile',
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: 0.5,
+              onUpdate: (self) => {
+                drawFrame(Math.round(self.progress * (TOTAL_FRAMES - 1)));
+              },
+            },
+          });
+        }
+
+        function preloadImages() {
+          let quickLoaded = 0;
+          // Primeros 10 frames con alta prioridad
+          for (let i = START; i < START + QUICK_FRAMES; i++) {
+            const img = new Image();
+            (img as any).fetchpriority = 'high';
+            img.src = pattern(i);
+            img.onload = () => {
+              quickLoaded++;
+              if (quickLoaded === 1) drawFrame(0);
+              if (quickLoaded === QUICK_FRAMES) initAnimation();
+            };
+            images[i - START] = img;
+          }
+          // Resto en segundo plano
           for (let i = START + QUICK_FRAMES; i <= END; i++) {
             const img = new Image();
             img.src = pattern(i);
