@@ -18,31 +18,9 @@ import Footer from '../components/Footer.astro';
     <style>
       html, body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
 
-      /* ── Móvil: anclaje superior absoluto ── */
+      /* La sección hero (animación) solo existe en desktop */
       @media (max-width: 767px) {
-        html, body {
-          margin-top: 0 !important;
-          padding-top: 0 !important;
-          overflow-x: hidden;
-        }
-        #hero {
-          margin-top: 0 !important;
-          padding-top: 0 !important;
-        }
-        #hero-sticky {
-          top: 0 !important;
-          margin-top: 0 !important;
-          padding-top: 0 !important;
-        }
-        #hero-canvas {
-          display: block !important;
-          top: 0 !important;
-          left: 0 !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          /* object-fit/position no aplica a canvas: el posicionamiento
-             real lo gestiona drawFrame() con cover + y=0 en JS */
-        }
+        #hero { display: none !important; }
       }
     </style>
   </head>
@@ -225,128 +203,104 @@ import Footer from '../components/Footer.astro';
     <Footer />
 
     <script>
-      import gsap from 'gsap';
-      import { ScrollTrigger } from 'gsap/ScrollTrigger';
+      // La animación solo se ejecuta en desktop (≥768px).
+      // En móvil el bloque #hero está oculto via CSS y este script no hace nada.
+      if (window.innerWidth >= 768) {
+        const { gsap } = await import('gsap');
+        const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+        gsap.registerPlugin(ScrollTrigger);
 
-      gsap.registerPlugin(ScrollTrigger);
+        const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement;
+        const ctx = canvas.getContext('2d')!;
 
-      const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement;
-      const ctx = canvas.getContext('2d')!;
+        const START = 31, END = 105;
+        const TOTAL_FRAMES = END - START + 1;
+        const QUICK_FRAMES = 15;
+        const pattern = (i: number) => `/INICIO/INICIO_${String(i).padStart(5, '0')}.jpg?v=2`;
 
-      const isMobile = window.innerWidth < 768;
+        const images: HTMLImageElement[] = new Array(TOTAL_FRAMES);
+        const frameObj = { frame: 0 };
+        let animationReady = false;
 
-      const DESKTOP = { start: 31, end: 105, pattern: (i: number) => `/INICIO/INICIO_${String(i).padStart(5, '0')}.jpg?v=2` };
-      const MOBILE  = { start: 0,  end: 90,  pattern: (i: number) => `/MOVIL/MOVIL_${String(i).padStart(5, '0')}.jpg?v=3` };
-      const CONFIG  = isMobile ? MOBILE : DESKTOP;
-
-      const TOTAL_FRAMES = CONFIG.end - CONFIG.start + 1;
-      const QUICK_FRAMES = 15;
-      const images: HTMLImageElement[] = new Array(TOTAL_FRAMES);
-      const frameObj = { frame: 0 };
-      let animationReady = false;
-
-      function setCanvasSize() {
-        const dpr = window.devicePixelRatio || 1;
-        const W = window.innerWidth;
-        // En móvil usamos visualViewport para respetar la barra del navegador
-        const H = (isMobile && window.visualViewport)
-          ? window.visualViewport.height
-          : window.innerHeight;
-        canvas.width  = W * dpr;
-        canvas.height = H * dpr;
-        canvas.style.width  = W + 'px';
-        canvas.style.height = H + 'px';
-        // Reescala el contexto 2D limpiamente en cada resize
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.scale(dpr, dpr);
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = 'high';
-      }
-
-      function drawFrame(index: number) {
-        const img = images[index];
-        if (!img || !img.complete) return;
-        const dpr = window.devicePixelRatio || 1;
-        const displayW = canvas.width / dpr;
-        const displayH = canvas.height / dpr;
-        ctx.fillStyle = '#000000';
-        ctx.fillRect(0, 0, displayW, displayH);
-
-        let w: number, h: number, x: number, y: number;
-
-        if (isMobile) {
-          // Cover + anchor top: la imagen (1054×1492) cubre toda la pantalla sin negro arriba
-          const scale = Math.max(displayW / img.naturalWidth, displayH / img.naturalHeight);
-          w = img.naturalWidth  * scale;
-          h = img.naturalHeight * scale;
-          x = (displayW - w) / 2;
-          y = 0;
-        } else {
-          // Desktop: ajuste al ancho con margen, centrado vertical
-          const scale = (displayW / img.naturalWidth) * 0.95;
-          w = img.naturalWidth  * scale;
-          h = img.naturalHeight * scale;
-          x = (displayW - w) / 2;
-          y = (displayH - h) / 2;
+        function setCanvasSize() {
+          const dpr = window.devicePixelRatio || 1;
+          const W = window.innerWidth;
+          const H = window.innerHeight;
+          canvas.width  = W * dpr;
+          canvas.height = H * dpr;
+          canvas.style.width  = W + 'px';
+          canvas.style.height = H + 'px';
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
+          ctx.scale(dpr, dpr);
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
         }
 
-        ctx.filter = 'contrast(1.05) brightness(1.02)';
-        ctx.drawImage(img, x, y, w, h);
-        ctx.filter = 'none';
-      }
+        function drawFrame(index: number) {
+          const img = images[index];
+          if (!img || !img.complete) return;
+          const dpr = window.devicePixelRatio || 1;
+          const displayW = canvas.width / dpr;
+          const displayH = canvas.height / dpr;
+          ctx.fillStyle = '#000000';
+          ctx.fillRect(0, 0, displayW, displayH);
+          const scale = (displayW / img.naturalWidth) * 0.95;
+          const w = img.naturalWidth  * scale;
+          const h = img.naturalHeight * scale;
+          const x = (displayW - w) / 2;
+          const y = (displayH - h) / 2;
+          ctx.filter = 'contrast(1.05) brightness(1.02)';
+          ctx.drawImage(img, x, y, w, h);
+          ctx.filter = 'none';
+        }
 
-      function initAnimation() {
-        if (animationReady) return;
-        animationReady = true;
-        drawFrame(0);
-
-        gsap.to(frameObj, {
-          frame: TOTAL_FRAMES - 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: '#hero',
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: 0.5,
-            onUpdate: (self) => {
-              const index = Math.round(self.progress * (TOTAL_FRAMES - 1));
-              drawFrame(index);
+        function initAnimation() {
+          if (animationReady) return;
+          animationReady = true;
+          drawFrame(0);
+          gsap.to(frameObj, {
+            frame: TOTAL_FRAMES - 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '#hero',
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: 0.5,
+              onUpdate: (self) => {
+                drawFrame(Math.round(self.progress * (TOTAL_FRAMES - 1)));
+              },
             },
-          },
+          });
+        }
+
+        function preloadImages() {
+          let quickLoaded = 0;
+          for (let i = START; i < START + QUICK_FRAMES; i++) {
+            const img = new Image();
+            (img as any).fetchpriority = 'high';
+            img.src = pattern(i);
+            img.onload = () => {
+              quickLoaded++;
+              if (quickLoaded === 1) drawFrame(0);
+              if (quickLoaded === QUICK_FRAMES) initAnimation();
+            };
+            images[i - START] = img;
+          }
+          for (let i = START + QUICK_FRAMES; i <= END; i++) {
+            const img = new Image();
+            img.src = pattern(i);
+            images[i - START] = img;
+          }
+        }
+
+        setCanvasSize();
+        preloadImages();
+
+        window.addEventListener('resize', () => {
+          setCanvasSize();
+          drawFrame(Math.round(frameObj.frame));
         });
       }
-
-      function preloadImages() {
-        let quickLoaded = 0;
-
-        // Primeros 15 frames con alta prioridad — arrancan la animación sin bloquear
-        for (let i = CONFIG.start; i < CONFIG.start + QUICK_FRAMES; i++) {
-          const img = new Image();
-          (img as any).fetchpriority = 'high';
-          img.src = CONFIG.pattern(i);
-          img.onload = () => {
-            quickLoaded++;
-            if (quickLoaded === 1) drawFrame(0);
-            if (quickLoaded === QUICK_FRAMES) initAnimation();
-          };
-          images[i - CONFIG.start] = img;
-        }
-
-        // Resto de frames en segundo plano sin bloquear
-        for (let i = CONFIG.start + QUICK_FRAMES; i <= CONFIG.end; i++) {
-          const img = new Image();
-          img.src = CONFIG.pattern(i);
-          images[i - CONFIG.start] = img;
-        }
-      }
-
-      setCanvasSize();
-      preloadImages();
-
-      window.addEventListener('resize', () => {
-        setCanvasSize();
-        drawFrame(Math.round(frameObj.frame));
-      });
     </script>
   </body>
 </html>
