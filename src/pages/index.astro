@@ -36,11 +36,11 @@ import Footer from '../components/Footer.astro';
     </section>
 
     <!-- Hero Móvil — solo <768px — frames MWEB_00000 a MWEB_00049 -->
-    <section id="hero-mobile" style="position:relative;height:300dvh;margin:0;padding:0;">
-      <div style="position:sticky;top:0;width:100%;height:100dvh;overflow:hidden;margin:0;padding:0;">
-        <canvas id="hero-canvas-mobile" style="display:block;position:absolute;top:0;left:0;width:100%;height:100%;margin:0;padding:0;"></canvas>
-        <div style="position:absolute;inset-x:0;top:0;height:6rem;background:linear-gradient(to bottom,#000,transparent);pointer-events:none;"></div>
-        <div style="position:absolute;inset-x:0;bottom:0;height:6rem;background:linear-gradient(to top,#000,transparent);pointer-events:none;"></div>
+    <section id="hero-mobile" style="position:relative;height:300dvh;margin:0;padding:0;z-index:1;">
+      <div style="position:sticky;top:0;left:0;width:100vw;height:100dvh;overflow:hidden;margin:0;padding:0;z-index:9999;visibility:visible !important;">
+        <canvas id="hero-canvas-mobile" style="display:block;position:absolute;top:0;left:0;width:100vw;height:100dvh;margin:0;padding:0;z-index:9999;visibility:visible !important;border:2px solid red;"></canvas>
+        <div style="position:absolute;inset-x:0;top:0;height:6rem;background:linear-gradient(to bottom,#000,transparent);pointer-events:none;z-index:10000;"></div>
+        <div style="position:absolute;inset-x:0;bottom:0;height:6rem;background:linear-gradient(to top,#000,transparent);pointer-events:none;z-index:10000;"></div>
       </div>
     </section>
 
@@ -211,7 +211,9 @@ import Footer from '../components/Footer.astro';
     <Footer />
 
     <script>
-      if (window.innerWidth < 768) {
+      document.addEventListener('DOMContentLoaded', async () => {
+        if (window.innerWidth >= 768) return;
+
         const { gsap } = await import('gsap');
         const { ScrollTrigger } = await import('gsap/ScrollTrigger');
         gsap.registerPlugin(ScrollTrigger);
@@ -221,7 +223,8 @@ import Footer from '../components/Footer.astro';
 
         const TOTAL  = 50;   // MWEB_00000 → MWEB_00049
         const QUICK  = 15;
-        const url = (i: number) => `/MWEB/MWEB_${String(i).padStart(5, '0')}.jpg`;
+        const BUST   = Date.now();
+        const url = (i: number) => `/MWEB/MWEB_${String(i).padStart(5, '0')}.jpg?v=${BUST}`;
 
         const imgs: HTMLImageElement[] = new Array(TOTAL);
         const frameObj = { f: 0 };
@@ -248,7 +251,6 @@ import Footer from '../components/Footer.astro';
           const H = canvas.height / dpr;
           ctx.fillStyle = '#000';
           ctx.fillRect(0, 0, W, H);
-          // object-fit: cover — cubre todo el canvas centrando la imagen
           const scale = Math.max(W / img.naturalWidth, H / img.naturalHeight);
           const w = img.naturalWidth  * scale;
           const h = img.naturalHeight * scale;
@@ -291,7 +293,7 @@ import Footer from '../components/Footer.astro';
         resize();
         preload();
         window.addEventListener('resize', () => { resize(); draw(Math.round(frameObj.f)); });
-      }
+      });
     </script>
 
     <script>
