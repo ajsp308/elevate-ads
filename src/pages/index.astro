@@ -11,7 +11,7 @@ import Footer from '../components/Footer.astro';
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="facebook-domain-verification" content="3zfdfn9ywow9mgvl0qzm51okraot2e" />
-    <title>Elevate Ads — Paquetes de Marketing en Redes Sociales</title>
+    <title>Elevate Ads — Más Clientes en Miami para tu Negocio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
@@ -33,7 +33,22 @@ import Footer from '../components/Footer.astro';
       <div id="hero-sticky" class="sticky top-0 w-full overflow-hidden" style="top:0;margin-top:0;padding-top:0;height:100dvh;">
         <canvas id="hero-canvas" style="display:block;width:100%;height:100%;image-rendering:auto;margin:0;padding:0;"></canvas>
         <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black to-transparent pointer-events-none"></div>
-        <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
+        <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
+        <!-- Hero Overlay Text — Desktop -->
+        <div class="absolute inset-0 flex flex-col items-center justify-end pb-20 px-6 text-center pointer-events-none">
+          <h1 class="text-4xl md:text-6xl font-black text-white leading-tight max-w-3xl" style="text-shadow:0 2px 24px rgba(0,0,0,0.85);">
+            ¿Tu negocio en Miami no recibe suficientes clientes?
+          </h1>
+          <p class="mt-4 text-lg md:text-xl text-slate-200 max-w-2xl" style="text-shadow:0 1px 12px rgba(0,0,0,0.8);">
+            Te conseguimos mensajes, citas y ventas reales usando contenido de alto nivel y anuncios optimizados. Resultados en días, no meses.
+          </p>
+          <div class="mt-7 pointer-events-auto flex flex-col items-center gap-3">
+            <a href="/contacto" class="px-9 py-4 bg-[#10b981] hover:bg-[#059669] text-black font-black text-xl rounded-xl transition-all shadow-[0_4px_30px_rgba(16,185,129,0.5)] tracking-wide">
+              👉 QUIERO MÁS CLIENTES
+            </a>
+            <span class="text-sm text-slate-300" style="text-shadow:0 1px 8px rgba(0,0,0,0.9);">⚡ Respuesta en menos de 10 minutos vía WhatsApp</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -42,7 +57,35 @@ import Footer from '../components/Footer.astro';
       <div style="position:sticky;top:0;left:0;width:100%;height:100dvh;overflow:hidden;margin:0;padding:0;">
         <canvas id="hero-canvas-mobile" style="display:block;position:absolute;top:0;left:0;width:100%;height:100%;margin:0;padding:0;"></canvas>
         <div style="position:absolute;inset-x:0;top:0;height:6rem;background:linear-gradient(to bottom,#000,transparent);pointer-events:none;"></div>
-        <div style="position:absolute;inset-x:0;bottom:0;height:6rem;background:linear-gradient(to top,#000,transparent);pointer-events:none;"></div>
+        <div style="position:absolute;inset-x:0;bottom:0;height:8rem;background:linear-gradient(to top,#000,transparent);pointer-events:none;"></div>
+        <!-- Hero Overlay Text — Mobile -->
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4.5rem;padding-left:1.5rem;padding-right:1.5rem;text-align:center;">
+          <h1 style="font-size:1.875rem;font-weight:900;color:#fff;line-height:1.2;max-width:32rem;text-shadow:0 2px 20px rgba(0,0,0,0.9);">
+            ¿Tu negocio en Miami no recibe suficientes clientes?
+          </h1>
+          <p style="margin-top:0.875rem;font-size:0.9375rem;color:#cbd5e1;max-width:28rem;text-shadow:0 1px 10px rgba(0,0,0,0.9);">
+            Te conseguimos mensajes, citas y ventas reales. Resultados en días, no meses.
+          </p>
+          <div style="margin-top:1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.625rem;">
+            <a href="/contacto" style="padding:0.875rem 2rem;background:#10b981;color:#000;font-weight:900;font-size:1rem;border-radius:0.75rem;text-decoration:none;display:inline-block;box-shadow:0 4px 24px rgba(16,185,129,0.45);">
+              👉 QUIERO MÁS CLIENTES
+            </a>
+            <span style="font-size:0.75rem;color:#94a3b8;text-shadow:0 1px 6px rgba(0,0,0,0.9);">⚡ Respuesta en menos de 10 minutos vía WhatsApp</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dolor y Realidad -->
+    <section class="py-16 px-4 bg-zinc-950 border-y border-white/5">
+      <div class="max-w-3xl mx-auto text-center flex flex-col gap-5">
+        <p class="text-2xl md:text-3xl font-black text-white leading-snug">
+          Si hoy no estás recibiendo mensajes...<br />
+          <span class="text-[#10b981]">tu competencia en Miami sí lo está.</span>
+        </p>
+        <p class="text-lg md:text-xl text-slate-400 font-medium">
+          No vendemos "likes". Vendemos el crecimiento que tu negocio necesita.
+        </p>
       </div>
     </section>
 
@@ -50,16 +93,20 @@ import Footer from '../components/Footer.astro';
     <section class="py-20 px-4 bg-black">
 
       <!-- Header -->
-      <div class="text-center mb-20">
-        <h1 class="text-3xl md:text-6xl font-bold tracking-tight max-w-4xl mx-auto leading-tight text-slate-50">
-          Aumenta tus Ventas <span class="text-[#10b981]">HOY</span>, Elije el Plan que Dominara tu mercado
-        </h1>
+      <div class="text-center mb-14">
+        <h2 class="text-3xl md:text-6xl font-bold tracking-tight max-w-4xl mx-auto leading-tight text-slate-50">
+          Elige el plan que te traerá más clientes <span class="text-[#10b981]">HOY</span>
+        </h2>
+        <p class="mt-5 text-base md:text-lg text-slate-400 max-w-2xl mx-auto">
+          Con solo 1–2 clientes nuevos, recuperas toda tu inversión.<br />
+          <span class="text-white font-semibold">Nuestro servicio se paga solo.</span>
+        </p>
       </div>
 
       <!-- Cards Grid -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
 
-        <!-- BASIC -->
+        <!-- STARTER -->
         <div class="bg-[#0f1115]/80 backdrop-blur-2xl border border-blue-500/20 rounded-2xl p-8 flex flex-col gap-6">
           <!-- Icon -->
           <div class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center">
@@ -68,15 +115,15 @@ import Footer from '../components/Footer.astro';
             </svg>
           </div>
           <div>
-            <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#60a5fa]">Basic</h2>
+            <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#60a5fa]">Starter</h2>
             <p class="text-5xl font-bold text-white tracking-tighter mt-2">$699<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
-            <p class="text-[#60a5fa] font-semibold mt-1">Iniciante</p>
+            <p class="text-[#60a5fa] font-semibold mt-1">Empieza a generar clientes</p>
           </div>
           <ul class="flex flex-col gap-5">
             {[
               "4 Publicaciones en Redes Sociales",
               "1 Reel Corto",
-              "1 AI-powered META-ADS",
+              "1 Campaña META de alto rendimiento",
               "Gestión de Anuncios",
               "Reporte Mensual",
               "Planificación de Contenido",
@@ -91,16 +138,16 @@ import Footer from '../components/Footer.astro';
               </li>
             ))}
           </ul>
-          <a href="/contacto?plan=basic" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-blue-700 to-blue-500 hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">
-            Comenzar <span>→</span>
+          <a href="/contacto?plan=starter" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-blue-700 to-blue-500 hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">
+            Quiero empezar <span>→</span>
           </a>
         </div>
 
-        <!-- STANDARD (Most Popular) -->
+        <!-- GROWTH (RECOMENDADO) -->
         <div class="relative bg-[#0f1115]/80 backdrop-blur-2xl border-2 border-[#10b981] rounded-2xl p-8 flex flex-col gap-6 shadow-[0_0_25px_rgba(16,185,129,0.4)]">
           <!-- Badge -->
           <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#10b981] text-black text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap">
-            MÁS POPULAR
+            RECOMENDADO
           </span>
           <!-- Icon -->
           <div class="w-12 h-12 rounded-full bg-[#10b981]/10 flex items-center justify-center">
@@ -109,15 +156,15 @@ import Footer from '../components/Footer.astro';
             </svg>
           </div>
           <div>
-            <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#10b981]">Standard</h2>
+            <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#10b981]">Growth</h2>
             <p class="text-5xl font-bold text-white tracking-tighter mt-2">$1,399<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
-            <p class="text-[#10b981] font-semibold mt-1">Plus</p>
+            <p class="text-[#10b981] font-semibold mt-1">Flujo constante de citas</p>
           </div>
           <ul class="flex flex-col gap-5">
             {[
               "8 Publicaciones en Redes Sociales",
               "2 Reels Profesionales",
-              "AI-powered META-ADS",
+              "Campaña META de alto rendimiento",
               "Gestión de Anuncios",
               "Reporte Mensual",
               "Planificación de Contenido",
@@ -132,12 +179,12 @@ import Footer from '../components/Footer.astro';
               </li>
             ))}
           </ul>
-          <a href="/contacto?plan=standard" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#10b981] to-[#34d399] hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">
-            Comenzar <span>→</span>
+          <a href="/contacto?plan=growth" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#10b981] to-[#34d399] hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">
+            Quiero más clientes <span>→</span>
           </a>
         </div>
 
-        <!-- PREMIUM -->
+        <!-- DOMINATE -->
         <div class="bg-[#0f1115]/80 backdrop-blur-2xl border border-amber-500/20 rounded-2xl p-8 flex flex-col gap-6">
           <!-- Icon -->
           <div class="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center">
@@ -146,15 +193,15 @@ import Footer from '../components/Footer.astro';
             </svg>
           </div>
           <div>
-            <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#fbbf24]">Premium</h2>
+            <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#fbbf24]">Dominate</h2>
             <p class="text-5xl font-bold text-white tracking-tighter mt-2">$1,899<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
-            <p class="text-[#fbbf24] font-semibold mt-1">Pro</p>
+            <p class="text-[#fbbf24] font-semibold mt-1">Domina tu mercado local</p>
           </div>
           <ul class="flex flex-col gap-5">
             {[
               "12 Publicaciones en Redes Sociales",
-              "2 Reels Pro + 1 Reel con IA",
-              "AI-powered META-ADS",
+              "3 Reels Pro (Cámara FX3/Ronin)",
+              "Campaña META de alto rendimiento",
               "Gestión de Anuncios",
               "Reporte Mensual",
               "Planificación de Contenido",
@@ -169,8 +216,8 @@ import Footer from '../components/Footer.astro';
               </li>
             ))}
           </ul>
-          <a href="/contacto?plan=premium" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#d97706] to-[#fbbf24] hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">
-            Comenzar <span>→</span>
+          <a href="/contacto?plan=dominate" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#d97706] to-[#fbbf24] hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">
+            Quiero dominar mi zona <span>→</span>
           </a>
         </div>
 
@@ -208,6 +255,37 @@ import Footer from '../components/Footer.astro';
         </div>
       </div>
 
+    </section>
+
+    <!-- ¿Para quién es esto? -->
+    <section class="py-16 px-4 bg-zinc-950">
+      <div class="max-w-3xl mx-auto text-center">
+        <h3 class="text-2xl md:text-3xl font-black text-white mb-8">¿Esto es para ti?</h3>
+        <ul class="flex flex-col gap-4 text-left">
+          {[
+            "Quieres dejar de depender del boca a boca",
+            "Quieres citas reales en tu calendario cada semana",
+            "Buscas calidad de video profesional filmado con cámara FX3/Ronin",
+          ].map((item) => (
+            <li class="flex items-start gap-4 bg-white/5 border border-white/10 rounded-xl p-4">
+              <span class="text-[#10b981] text-xl font-bold mt-0.5 shrink-0">✓</span>
+              <span class="text-slate-200 font-medium text-base">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Urgencia y Cierre -->
+    <section class="py-16 px-4 bg-black border-t border-white/5">
+      <div class="max-w-3xl mx-auto text-center flex flex-col items-center gap-6">
+        <p class="text-base md:text-lg text-amber-400 font-semibold leading-relaxed">
+          ⚠️ Solo trabajamos con un número limitado de negocios por zona en Miami para garantizar exclusividad y evitar competencia directa. Asegura tu cupo hoy.
+        </p>
+        <a href="/contacto" class="px-9 py-4 bg-[#10b981] hover:bg-[#059669] text-black font-black text-xl rounded-xl transition-all shadow-[0_4px_30px_rgba(16,185,129,0.45)] tracking-wide">
+          👉 AGENDAR MI ESTRATEGIA GRATIS
+        </a>
+      </div>
     </section>
 
     <Footer />

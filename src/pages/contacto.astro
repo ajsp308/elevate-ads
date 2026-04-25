@@ -105,22 +105,22 @@ import Footer from '../components/Footer.astro';
 
     <script>
       const PLANS: Record<string, { label: string; color: string; gradient: string; ring: string; bg: string }> = {
-        basic: {
-          label: 'Has seleccionado el Plan Basic',
+        starter: {
+          label: 'Has seleccionado el Plan Starter',
           color: '#3b82f6',
           gradient: 'linear-gradient(to right, #1d4ed8, #3b82f6)',
           ring: 'rgba(59,130,246,0.5)',
           bg: 'rgba(59,130,246,0.15)',
         },
-        standard: {
-          label: 'Has seleccionado el Plan Standard',
+        growth: {
+          label: 'Has seleccionado el Plan Growth',
           color: '#10b981',
           gradient: 'linear-gradient(to right, #10b981, #34d399)',
           ring: 'rgba(16,185,129,0.5)',
           bg: 'rgba(16,185,129,0.15)',
         },
-        premium: {
-          label: 'Has seleccionado el Plan Premium',
+        dominate: {
+          label: 'Has seleccionado el Plan Dominate',
           color: '#f59e0b',
           gradient: 'linear-gradient(to right, #d97706, #f59e0b)',
           ring: 'rgba(245,158,11,0.5)',
@@ -129,8 +129,8 @@ import Footer from '../components/Footer.astro';
       };
 
       const params = new URLSearchParams(window.location.search);
-      const planKey = params.get('plan') || 'basic';
-      const plan = PLANS[planKey] || PLANS.basic;
+      const planKey = params.get('plan') || 'starter';
+      const plan = PLANS[planKey] || PLANS.starter;
 
       // Rellenar campo oculto
       (document.getElementById('hidden-plan') as HTMLInputElement).value = planKey;
