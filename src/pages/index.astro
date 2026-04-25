@@ -213,9 +213,8 @@ import Footer from '../components/Footer.astro';
     <Footer />
 
     <script>
-      document.addEventListener('DOMContentLoaded', async () => {
-        if (window.innerWidth >= 768) return;
-
+      // ── MÓVIL (<768px) ──────────────────────────────────────────────────────
+      if (window.innerWidth < 768) {
         const { gsap } = await import('gsap');
         const { ScrollTrigger } = await import('gsap/ScrollTrigger');
         gsap.registerPlugin(ScrollTrigger);
@@ -223,19 +222,19 @@ import Footer from '../components/Footer.astro';
         const canvas = document.getElementById('hero-canvas-mobile') as HTMLCanvasElement;
         const ctx = canvas.getContext('2d')!;
 
-        const TOTAL = 50;   // MWEB_00000 → MWEB_00049
+        const TOTAL = 50;
         const QUICK = 15;
-        const BUST  = Date.now();
-        const url = (i: number) => `/MWEB/MWEB_${String(i).padStart(5, '0')}.jpg?v=${BUST}`;
+        const url = (i: number) => `/MWEB/MWEB_${String(i).padStart(5, '0')}.jpg`;
 
         const imgs: HTMLImageElement[] = new Array(TOTAL);
-        let targetFrame = 0;
-        let currentFrame = 0;
+        let target = 0, current = 0;
+        let W = 0, H = 0;
+        let rafPending = false;
 
         function resize() {
           const dpr = window.devicePixelRatio || 1;
-          const W = window.innerWidth;
-          const H = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+          W = window.innerWidth;
+          H = window.innerHeight;
           canvas.width  = W * dpr;
           canvas.height = H * dpr;
           canvas.style.width  = W + 'px';
@@ -249,45 +248,56 @@ import Footer from '../components/Footer.astro';
           const i = Math.max(0, Math.min(TOTAL - 1, Math.round(idx)));
           const img = imgs[i];
           if (!img?.complete) return;
-          const dpr = window.devicePixelRatio || 1;
-          const W = canvas.width / dpr;
-          const H = canvas.height / dpr;
           ctx.fillStyle = '#000';
           ctx.fillRect(0, 0, W, H);
           const scale = Math.max(W / img.naturalWidth, H / img.naturalHeight);
-          const w = img.naturalWidth  * scale;
-          const h = img.naturalHeight * scale;
-          ctx.drawImage(img, (W - w) / 2, (H - h) / 2, w, h);
+          const dw = img.naturalWidth  * scale;
+          const dh = img.naturalHeight * scale;
+          ctx.drawImage(img, (W - dw) / 2, (H - dh) / 2, dw, dh);
         }
 
-        // RAF loop: lerp currentFrame → targetFrame para suavizado 60/120Hz
-        function rafLoop() {
-          requestAnimationFrame(rafLoop);
-          const diff = targetFrame - currentFrame;
-          if (Math.abs(diff) < 0.05) return;
-          currentFrame += diff * 0.18;
-          draw(currentFrame);
+        // RAF bajo demanda: solo corre mientras hay diferencia, para cuando se detiene
+        function tick() {
+          rafPending = false;
+          const diff = target - current;
+          if (Math.abs(diff) > 0.05) {
+            current += diff * 0.2;
+            draw(current);
+            scheduleRaf();
+          } else if (current !== target) {
+            current = target;
+            draw(current);
+          }
+        }
+
+        function scheduleRaf() {
+          if (!rafPending) { rafPending = true; requestAnimationFrame(tick); }
         }
 
         function init() {
           draw(0);
-          // ScrollTrigger directo — sin tween intermediario
-          // El frame sigue el scroll exactamente; el lerp del RAF aporta el suavizado
           ScrollTrigger.create({
             trigger: '#hero-mobile',
             start: 'top top',
             end: 'bottom bottom',
             onUpdate: (self) => {
-              targetFrame = self.progress * (TOTAL - 1);
+              target = self.progress * (TOTAL - 1);
+              scheduleRaf();
             },
           });
-          rafLoop();
+        }
+
+        let resizeTimer: ReturnType<typeof setTimeout>;
+        function onResize() {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(() => { resize(); draw(current); }, 150);
         }
 
         function preload() {
           let loaded = 0;
           for (let i = 0; i < QUICK; i++) {
             const img = new Image();
+            img.decoding = 'async';
             (img as any).fetchpriority = 'high';
             img.src = url(i);
             img.onload = () => { if (++loaded === 1) draw(0); if (loaded === QUICK) init(); };
@@ -295,6 +305,7 @@ import Footer from '../components/Footer.astro';
           }
           for (let i = QUICK; i < TOTAL; i++) {
             const img = new Image();
+            img.decoding = 'async';
             img.src = url(i);
             imgs[i] = img;
           }
@@ -302,11 +313,12 @@ import Footer from '../components/Footer.astro';
 
         resize();
         preload();
-        window.addEventListener('resize', () => { resize(); draw(Math.round(currentFrame)); });
-      });
+        window.addEventListener('resize', onResize, { passive: true });
+      }
     </script>
 
     <script>
+      // ── DESKTOP (≥768px) ────────────────────────────────────────────────────
       if (window.innerWidth >= 768) {
         const { gsap } = await import('gsap');
         const { ScrollTrigger } = await import('gsap/ScrollTrigger');
@@ -321,38 +333,33 @@ import Footer from '../components/Footer.astro';
         const pattern = (i: number) => `/INICIO/INICIO_${String(i).padStart(5, '0')}.jpg?v=2`;
 
         const images: HTMLImageElement[] = new Array(TOTAL_FRAMES);
-        const frameObj = { frame: 0 };
+        let currentIdx = 0;
         let animationReady = false;
+        let W = 0, H = 0;
 
         function setCanvasSize() {
           const dpr = window.devicePixelRatio || 1;
-          const W = window.innerWidth;
-          const H = window.innerHeight;
+          W = window.innerWidth;
+          H = window.innerHeight;
           canvas.width  = W * dpr;
           canvas.height = H * dpr;
           canvas.style.width  = W + 'px';
           canvas.style.height = H + 'px';
-          ctx.setTransform(1, 0, 0, 1, 0, 0);
-          ctx.scale(dpr, dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
         }
 
         function drawFrame(index: number) {
           const img = images[index];
-          if (!img || !img.complete) return;
-          const dpr = window.devicePixelRatio || 1;
-          const displayW = canvas.width / dpr;
-          const displayH = canvas.height / dpr;
-          ctx.fillStyle = '#000000';
-          ctx.fillRect(0, 0, displayW, displayH);
-          const scale = (displayW / img.naturalWidth) * 0.95;
+          if (!img?.complete) return;
+          ctx.fillStyle = '#000';
+          ctx.fillRect(0, 0, W, H);
+          const scale = (W / img.naturalWidth) * 0.95;
           const w = img.naturalWidth  * scale;
           const h = img.naturalHeight * scale;
-          const x = (displayW - w) / 2;
-          const y = (displayH - h) / 2;
           ctx.filter = 'contrast(1.05) brightness(1.02)';
-          ctx.drawImage(img, x, y, w, h);
+          ctx.drawImage(img, (W - w) / 2, (H - h) / 2, w, h);
           ctx.filter = 'none';
         }
 
@@ -360,8 +367,8 @@ import Footer from '../components/Footer.astro';
           if (animationReady) return;
           animationReady = true;
           drawFrame(0);
-          gsap.to(frameObj, {
-            frame: TOTAL_FRAMES - 1,
+          gsap.to({ f: 0 }, {
+            f: TOTAL_FRAMES - 1,
             ease: 'none',
             scrollTrigger: {
               trigger: '#hero',
@@ -369,7 +376,8 @@ import Footer from '../components/Footer.astro';
               end: 'bottom bottom',
               scrub: 0.5,
               onUpdate: (self) => {
-                drawFrame(Math.round(self.progress * (TOTAL_FRAMES - 1)));
+                currentIdx = Math.round(self.progress * (TOTAL_FRAMES - 1));
+                drawFrame(currentIdx);
               },
             },
           });
@@ -379,6 +387,7 @@ import Footer from '../components/Footer.astro';
           let quickLoaded = 0;
           for (let i = START; i < START + QUICK_FRAMES; i++) {
             const img = new Image();
+            img.decoding = 'async';
             (img as any).fetchpriority = 'high';
             img.src = pattern(i);
             img.onload = () => {
@@ -390,18 +399,19 @@ import Footer from '../components/Footer.astro';
           }
           for (let i = START + QUICK_FRAMES; i <= END; i++) {
             const img = new Image();
+            img.decoding = 'async';
             img.src = pattern(i);
             images[i - START] = img;
           }
         }
 
+        let resizeTimer: ReturnType<typeof setTimeout>;
         setCanvasSize();
         preloadImages();
-
         window.addEventListener('resize', () => {
-          setCanvasSize();
-          drawFrame(Math.round(frameObj.frame));
-        });
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(() => { setCanvasSize(); drawFrame(currentIdx); }, 150);
+        }, { passive: true });
       }
     </script>
 
