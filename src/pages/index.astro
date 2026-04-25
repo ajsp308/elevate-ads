@@ -18,9 +18,10 @@ import Footer from '../components/Footer.astro';
     <style>
       html, body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
       @media (min-width: 768px) { #hero-mobile { display: none !important; } }
-      @media (max-width: 767px)  {
+      @media (max-width: 767px) {
         #hero { display: none !important; }
-        html, body { margin: 0; padding: 0; overflow-x: hidden; }
+        html, body { margin: 0; padding: 0; background: #000; overflow-x: hidden; }
+        #hero-mobile { display: block; margin: 0; padding: 0; }
       }
     </style>
   </head>
@@ -36,11 +37,11 @@ import Footer from '../components/Footer.astro';
     </section>
 
     <!-- Hero Móvil — solo <768px — frames MWEB_00000 a MWEB_00049 -->
-    <section id="hero-mobile" style="position:relative;height:300dvh;margin:0;padding:0;z-index:1;">
-      <div style="position:sticky;top:0;left:0;width:100vw;height:100dvh;overflow:hidden;margin:0;padding:0;z-index:9999;visibility:visible !important;">
-        <canvas id="hero-canvas-mobile" style="display:block;position:absolute;top:0;left:0;width:100vw;height:100dvh;margin:0;padding:0;z-index:9999;visibility:visible !important;border:2px solid red;"></canvas>
-        <div style="position:absolute;inset-x:0;top:0;height:6rem;background:linear-gradient(to bottom,#000,transparent);pointer-events:none;z-index:10000;"></div>
-        <div style="position:absolute;inset-x:0;bottom:0;height:6rem;background:linear-gradient(to top,#000,transparent);pointer-events:none;z-index:10000;"></div>
+    <section id="hero-mobile" style="position:relative;height:300dvh;margin:0;padding:0;">
+      <div style="position:sticky;top:0;left:0;width:100%;height:100dvh;overflow:hidden;margin:0;padding:0;">
+        <canvas id="hero-canvas-mobile" style="display:block;position:absolute;top:0;left:0;width:100%;height:100%;margin:0;padding:0;"></canvas>
+        <div style="position:absolute;inset-x:0;top:0;height:6rem;background:linear-gradient(to bottom,#000,transparent);pointer-events:none;"></div>
+        <div style="position:absolute;inset-x:0;bottom:0;height:6rem;background:linear-gradient(to top,#000,transparent);pointer-events:none;"></div>
       </div>
     </section>
 
@@ -221,14 +222,14 @@ import Footer from '../components/Footer.astro';
         const canvas = document.getElementById('hero-canvas-mobile') as HTMLCanvasElement;
         const ctx = canvas.getContext('2d')!;
 
-        const TOTAL  = 50;   // MWEB_00000 → MWEB_00049
-        const QUICK  = 15;
-        const BUST   = Date.now();
+        const TOTAL = 50;   // MWEB_00000 → MWEB_00049
+        const QUICK = 15;
+        const BUST  = Date.now();
         const url = (i: number) => `/MWEB/MWEB_${String(i).padStart(5, '0')}.jpg?v=${BUST}`;
 
         const imgs: HTMLImageElement[] = new Array(TOTAL);
-        const frameObj = { f: 0 };
-        let ready = false;
+        let targetFrame = 0;
+        let currentFrame = 0;
 
         function resize() {
           const dpr = window.devicePixelRatio || 1;
@@ -244,7 +245,8 @@ import Footer from '../components/Footer.astro';
         }
 
         function draw(idx: number) {
-          const img = imgs[idx];
+          const i = Math.max(0, Math.min(TOTAL - 1, Math.round(idx)));
+          const img = imgs[i];
           if (!img?.complete) return;
           const dpr = window.devicePixelRatio || 1;
           const W = canvas.width / dpr;
@@ -257,21 +259,28 @@ import Footer from '../components/Footer.astro';
           ctx.drawImage(img, (W - w) / 2, (H - h) / 2, w, h);
         }
 
+        // RAF loop: lerp currentFrame → targetFrame para suavizado 60/120Hz
+        function rafLoop() {
+          requestAnimationFrame(rafLoop);
+          const diff = targetFrame - currentFrame;
+          if (Math.abs(diff) < 0.05) return;
+          currentFrame += diff * 0.18;
+          draw(currentFrame);
+        }
+
         function init() {
-          if (ready) return;
-          ready = true;
           draw(0);
-          gsap.to(frameObj, {
-            f: TOTAL - 1,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: '#hero-mobile',
-              start: 'top top',
-              end: 'bottom bottom',
-              scrub: 0.5,
-              onUpdate: (s) => draw(Math.round(s.progress * (TOTAL - 1))),
+          // ScrollTrigger directo — sin tween intermediario
+          // El frame sigue el scroll exactamente; el lerp del RAF aporta el suavizado
+          ScrollTrigger.create({
+            trigger: '#hero-mobile',
+            start: 'top top',
+            end: 'bottom bottom',
+            onUpdate: (self) => {
+              targetFrame = self.progress * (TOTAL - 1);
             },
           });
+          rafLoop();
         }
 
         function preload() {
@@ -292,7 +301,7 @@ import Footer from '../components/Footer.astro';
 
         resize();
         preload();
-        window.addEventListener('resize', () => { resize(); draw(Math.round(frameObj.f)); });
+        window.addEventListener('resize', () => { resize(); draw(Math.round(currentFrame)); });
       });
     </script>
 
