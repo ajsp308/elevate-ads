@@ -45,7 +45,7 @@ import Footer from '../components/Footer.astro';
       </div>
 
       <!-- Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-7xl mx-auto items-start">
 
         <!-- STARTER -->
         <div class="bg-[#0f1115]/80 backdrop-blur-2xl border border-blue-500/20 rounded-2xl p-8 flex flex-col gap-6">
@@ -57,7 +57,7 @@ import Footer from '../components/Footer.astro';
           </div>
           <div>
             <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#60a5fa]">Starter</h2>
-            <p class="text-5xl font-bold text-white tracking-tighter mt-2">$699<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
+            <p class="text-5xl font-bold text-white tracking-tighter mt-2">$999<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
             <p class="text-[#60a5fa] font-semibold mt-1">Empieza a generar clientes</p>
           </div>
           <ul class="flex flex-col gap-5">
@@ -98,7 +98,7 @@ import Footer from '../components/Footer.astro';
           </div>
           <div>
             <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#10b981]">Growth</h2>
-            <p class="text-5xl font-bold text-white tracking-tighter mt-2">$1,399<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
+            <p class="text-5xl font-bold text-white tracking-tighter mt-2">$1,799<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
             <p class="text-[#10b981] font-semibold mt-1">Flujo constante de citas</p>
           </div>
           <ul class="flex flex-col gap-5">
@@ -135,7 +135,7 @@ import Footer from '../components/Footer.astro';
           </div>
           <div>
             <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#fbbf24]">Dominate</h2>
-            <p class="text-5xl font-bold text-white tracking-tighter mt-2">$1,899<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
+            <p class="text-5xl font-bold text-white tracking-tighter mt-2">$2,999<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
             <p class="text-[#fbbf24] font-semibold mt-1">Domina tu mercado local</p>
           </div>
           <ul class="flex flex-col gap-5">
@@ -159,6 +159,49 @@ import Footer from '../components/Footer.astro';
           </ul>
           <a href="/contacto?plan=dominate" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#d97706] to-[#fbbf24] hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">
             Quiero dominar mi zona <span>→</span>
+          </a>
+        </div>
+
+        <!-- PREMIUM (EXCLUSIVO) -->
+        <div class="relative bg-[#0f1115]/80 backdrop-blur-2xl border-2 border-[#FFD700]/60 rounded-2xl p-8 flex flex-col gap-6 shadow-[0_0_35px_rgba(255,215,0,0.2)]">
+          <!-- Badge -->
+          <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#B8860B] to-[#FFD700] text-black text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap">
+            EXCLUSIVO
+          </span>
+          <!-- Icon -->
+          <div class="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-yellow-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#FFD700]">Premium</h2>
+            <p class="text-5xl font-bold text-white tracking-tighter mt-2">$4,500<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
+            <p class="text-[#FFD700] font-semibold mt-1">Presencia total en el mercado</p>
+          </div>
+          <ul class="flex flex-col gap-5">
+            {[
+              "16 Publicaciones en Redes Sociales",
+              "5 Reels Pro (Cámara FX3/Ronin)",
+              "Campañas META + Google Ads",
+              "Gestión de Anuncios",
+              "Reporte Semanal con métricas detalladas",
+              "Planificación de Contenido",
+              "Account Manager dedicado",
+              "Estrategia mensual personalizada",
+            ].map((item) => (
+              <li class="flex items-center gap-3">
+                <span class="w-[14px] h-[14px] rounded-full border border-[#FFD700] flex items-center justify-center shrink-0">
+                  <svg class="w-[8px] h-[8px] text-[#FFD700]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
+                <span class="text-[14px] font-medium text-slate-300 leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+          <a href="/contacto?plan=premium" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#B8860B] to-[#FFD700] hover:brightness-110 text-base font-bold text-black tracking-wide transition-all flex items-center justify-center gap-2">
+            Quiero el plan exclusivo <span>→</span>
           </a>
         </div>
 
