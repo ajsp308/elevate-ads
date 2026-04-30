@@ -38,18 +38,30 @@ import Footer from '../components/Footer.astro';
     <section class="py-20 px-4 bg-black">
 
       <!-- Header -->
-      <div class="text-center mb-14">
+      <div class="text-center mb-10">
         <h2 class="text-3xl md:text-6xl font-bold tracking-tight max-w-4xl mx-auto leading-tight text-slate-50">
           Elige el plan que te traerá más clientes <span class="text-[#10b981]">HOY</span>
         </h2>
       </div>
 
-      <!-- Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-7xl mx-auto items-start">
+      <!-- Toggle Switch -->
+      <div class="flex justify-center mb-12 px-4">
+        <div id="pricing-toggle" class="relative flex bg-white/5 border border-white/10 rounded-full p-1">
+          <div id="toggle-pill" class="absolute rounded-full bg-[#10b981] pointer-events-none" style="top:4px;height:calc(100% - 8px);left:4px;width:10px;transition:left 0.3s ease,width 0.3s ease;"></div>
+          <button id="btn-completo" type="button" class="relative z-10 px-4 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap" style="color:#000;transition:color 0.3s;">
+            Todo incluido
+          </button>
+          <button id="btn-gestion" type="button" class="relative z-10 px-4 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap" style="color:#94a3b8;transition:color 0.3s;">
+            Solo gestión de anuncios
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid: Todo incluido -->
+      <div id="grid-completo" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-7xl mx-auto items-start" style="opacity:1;transition:opacity 0.25s ease;">
 
         <!-- STARTER -->
         <div class="bg-[#0f1115]/80 backdrop-blur-2xl border border-blue-500/20 rounded-2xl p-8 flex flex-col gap-6">
-          <!-- Icon -->
           <div class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center">
             <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -61,36 +73,21 @@ import Footer from '../components/Footer.astro';
             <p class="text-[#60a5fa] font-semibold mt-1">Empieza a generar clientes</p>
           </div>
           <ul class="flex flex-col gap-5">
-            {[
-              "4 Publicaciones en Redes Sociales",
-              "1 Reel Corto",
-              "1 Campaña META de alto rendimiento",
-              "Gestión de Anuncios",
-              "Reporte Mensual",
-              "Planificación de Contenido",
-            ].map((item) => (
+            {["4 Publicaciones en Redes Sociales","1 Reel Corto","1 Campaña META de alto rendimiento","Gestión de Anuncios","Reporte Mensual","Planificación de Contenido"].map((item) => (
               <li class="flex items-center gap-3">
                 <span class="w-[14px] h-[14px] rounded-full border border-[#60a5fa] flex items-center justify-center shrink-0">
-                  <svg class="w-[8px] h-[8px] text-[#60a5fa]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
+                  <svg class="w-[8px] h-[8px] text-[#60a5fa]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
                 </span>
                 <span class="text-[14px] font-medium text-slate-300 leading-relaxed">{item}</span>
               </li>
             ))}
           </ul>
-          <a href="/contacto?plan=starter" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-blue-700 to-blue-500 hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">
-            Quiero empezar <span>→</span>
-          </a>
+          <a href="/contacto?plan=starter" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-blue-700 to-blue-500 hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">Quiero empezar <span>→</span></a>
         </div>
 
         <!-- GROWTH (RECOMENDADO) -->
         <div class="relative bg-[#0f1115]/80 backdrop-blur-2xl border-2 border-[#10b981] rounded-2xl p-8 flex flex-col gap-6 shadow-[0_0_25px_rgba(16,185,129,0.4)]">
-          <!-- Badge -->
-          <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#10b981] text-black text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap">
-            RECOMENDADO
-          </span>
-          <!-- Icon -->
+          <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#10b981] text-black text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap">RECOMENDADO</span>
           <div class="w-12 h-12 rounded-full bg-[#10b981]/10 flex items-center justify-center">
             <svg class="w-6 h-6 text-[#10b981]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
@@ -102,32 +99,20 @@ import Footer from '../components/Footer.astro';
             <p class="text-[#10b981] font-semibold mt-1">Flujo constante de citas</p>
           </div>
           <ul class="flex flex-col gap-5">
-            {[
-              "8 Publicaciones en Redes Sociales",
-              "2 Reels Profesionales",
-              "Campaña META de alto rendimiento",
-              "Gestión de Anuncios",
-              "Reporte Mensual",
-              "Planificación de Contenido",
-            ].map((item) => (
+            {["8 Publicaciones en Redes Sociales","2 Reels Profesionales","Campaña META de alto rendimiento","Gestión de Anuncios","Reporte Mensual","Planificación de Contenido"].map((item) => (
               <li class="flex items-center gap-3">
                 <span class="w-[14px] h-[14px] rounded-full border border-[#10b981] flex items-center justify-center shrink-0">
-                  <svg class="w-[8px] h-[8px] text-[#10b981]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
+                  <svg class="w-[8px] h-[8px] text-[#10b981]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
                 </span>
                 <span class="text-[14px] font-medium text-slate-300 leading-relaxed">{item}</span>
               </li>
             ))}
           </ul>
-          <a href="/contacto?plan=growth" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#10b981] to-[#34d399] hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">
-            Quiero más clientes <span>→</span>
-          </a>
+          <a href="/contacto?plan=growth" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#10b981] to-[#34d399] hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">Quiero más clientes <span>→</span></a>
         </div>
 
         <!-- DOMINATE -->
         <div class="bg-[#0f1115]/80 backdrop-blur-2xl border border-amber-500/20 rounded-2xl p-8 flex flex-col gap-6">
-          <!-- Icon -->
           <div class="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center">
             <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 3l1.5 4.5L12 5l5.5 2.5L19 3l-1 6H6L5 3zM6 9h12v2a6 6 0 01-12 0V9zM9 21h6M12 19v2" />
@@ -139,36 +124,21 @@ import Footer from '../components/Footer.astro';
             <p class="text-[#fbbf24] font-semibold mt-1">Domina tu mercado local</p>
           </div>
           <ul class="flex flex-col gap-5">
-            {[
-              "12 Publicaciones en Redes Sociales",
-              "3 Reels Pro (Cámara FX3/Ronin)",
-              "Campaña META de alto rendimiento",
-              "Gestión de Anuncios",
-              "Reporte Mensual",
-              "Planificación de Contenido",
-            ].map((item) => (
+            {["12 Publicaciones en Redes Sociales","3 Reels Pro (Cámara FX3/Ronin)","Campaña META de alto rendimiento","Gestión de Anuncios","Reporte Mensual","Planificación de Contenido"].map((item) => (
               <li class="flex items-center gap-3">
                 <span class="w-[14px] h-[14px] rounded-full border border-[#fbbf24] flex items-center justify-center shrink-0">
-                  <svg class="w-[8px] h-[8px] text-[#fbbf24]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
+                  <svg class="w-[8px] h-[8px] text-[#fbbf24]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
                 </span>
                 <span class="text-[14px] font-medium text-slate-300 leading-relaxed">{item}</span>
               </li>
             ))}
           </ul>
-          <a href="/contacto?plan=dominate" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#d97706] to-[#fbbf24] hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">
-            Quiero dominar mi zona <span>→</span>
-          </a>
+          <a href="/contacto?plan=dominate" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#d97706] to-[#fbbf24] hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">Quiero dominar mi zona <span>→</span></a>
         </div>
 
         <!-- PREMIUM (EXCLUSIVO) -->
         <div class="relative bg-[#0f1115]/80 backdrop-blur-2xl border-2 border-[#FFD700]/60 rounded-2xl p-8 flex flex-col gap-6 shadow-[0_0_35px_rgba(255,215,0,0.2)]">
-          <!-- Badge -->
-          <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#B8860B] to-[#FFD700] text-black text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap">
-            EXCLUSIVO
-          </span>
-          <!-- Icon -->
+          <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#B8860B] to-[#FFD700] text-black text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap">EXCLUSIVO</span>
           <div class="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center">
             <svg class="w-6 h-6 text-yellow-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
@@ -180,29 +150,127 @@ import Footer from '../components/Footer.astro';
             <p class="text-[#FFD700] font-semibold mt-1">Presencia total en el mercado</p>
           </div>
           <ul class="flex flex-col gap-5">
-            {[
-              "16 Publicaciones en Redes Sociales",
-              "5 Reels Pro (Cámara FX3/Ronin)",
-              "Campañas META + Google Ads",
-              "Gestión de Anuncios",
-              "Reporte Semanal con métricas detalladas",
-              "Planificación de Contenido",
-              "Account Manager dedicado",
-              "Estrategia mensual personalizada",
-            ].map((item) => (
+            {["16 Publicaciones en Redes Sociales","5 Reels Pro (Cámara FX3/Ronin)","Campañas META + Google Ads","Gestión de Anuncios","Reporte Semanal con métricas detalladas","Planificación de Contenido","Account Manager dedicado","Estrategia mensual personalizada"].map((item) => (
               <li class="flex items-center gap-3">
                 <span class="w-[14px] h-[14px] rounded-full border border-[#FFD700] flex items-center justify-center shrink-0">
-                  <svg class="w-[8px] h-[8px] text-[#FFD700]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
+                  <svg class="w-[8px] h-[8px] text-[#FFD700]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
                 </span>
                 <span class="text-[14px] font-medium text-slate-300 leading-relaxed">{item}</span>
               </li>
             ))}
           </ul>
-          <a href="/contacto?plan=premium" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#B8860B] to-[#FFD700] hover:brightness-110 text-base font-bold text-black tracking-wide transition-all flex items-center justify-center gap-2">
-            Quiero el plan exclusivo <span>→</span>
-          </a>
+          <a href="/contacto?plan=premium" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#B8860B] to-[#FFD700] hover:brightness-110 text-base font-bold text-black tracking-wide transition-all flex items-center justify-center gap-2">Quiero el plan exclusivo <span>→</span></a>
+        </div>
+
+      </div>
+
+      <!-- Grid: Solo gestión de anuncios -->
+      <div id="grid-gestion" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-7xl mx-auto items-start" style="opacity:0;display:none;transition:opacity 0.25s ease;">
+
+        <!-- STARTER GESTIÓN -->
+        <div class="bg-[#0f1115]/80 backdrop-blur-2xl border border-blue-500/20 rounded-2xl p-8 flex flex-col gap-6">
+          <div class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#60a5fa]">Starter</h2>
+            <p class="text-5xl font-bold text-white tracking-tighter mt-2">$499<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
+            <p class="text-[#60a5fa] font-semibold mt-1">Empieza a generar clientes</p>
+          </div>
+          <ul class="flex flex-col gap-5">
+            {["Gestión de hasta 3 publicaciones como anuncios","1 Campaña META activa","Gestión de Anuncios","Reporte Mensual"].map((item) => (
+              <li class="flex items-center gap-3">
+                <span class="w-[14px] h-[14px] rounded-full border border-[#60a5fa] flex items-center justify-center shrink-0">
+                  <svg class="w-[8px] h-[8px] text-[#60a5fa]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                </span>
+                <span class="text-[14px] font-medium text-slate-300 leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="text-xs text-slate-500 italic border-t border-white/5 pt-4">El cliente provee el contenido</p>
+          <a href="/contacto?plan=starter-gestion" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-blue-700 to-blue-500 hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">Quiero empezar <span>→</span></a>
+        </div>
+
+        <!-- GROWTH GESTIÓN (RECOMENDADO) -->
+        <div class="relative bg-[#0f1115]/80 backdrop-blur-2xl border-2 border-[#10b981] rounded-2xl p-8 flex flex-col gap-6 shadow-[0_0_25px_rgba(16,185,129,0.4)]">
+          <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#10b981] text-black text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap">RECOMENDADO</span>
+          <div class="w-12 h-12 rounded-full bg-[#10b981]/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-[#10b981]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#10b981]">Growth</h2>
+            <p class="text-5xl font-bold text-white tracking-tighter mt-2">$899<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
+            <p class="text-[#10b981] font-semibold mt-1">Flujo constante de citas</p>
+          </div>
+          <ul class="flex flex-col gap-5">
+            {["Gestión de hasta 6 publicaciones como anuncios","2 Campañas META activas","Gestión de Anuncios","Reporte Mensual"].map((item) => (
+              <li class="flex items-center gap-3">
+                <span class="w-[14px] h-[14px] rounded-full border border-[#10b981] flex items-center justify-center shrink-0">
+                  <svg class="w-[8px] h-[8px] text-[#10b981]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                </span>
+                <span class="text-[14px] font-medium text-slate-300 leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="text-xs text-slate-500 italic border-t border-white/5 pt-4">El cliente provee el contenido</p>
+          <a href="/contacto?plan=growth-gestion" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#10b981] to-[#34d399] hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">Quiero más clientes <span>→</span></a>
+        </div>
+
+        <!-- DOMINATE GESTIÓN -->
+        <div class="bg-[#0f1115]/80 backdrop-blur-2xl border border-amber-500/20 rounded-2xl p-8 flex flex-col gap-6">
+          <div class="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 3l1.5 4.5L12 5l5.5 2.5L19 3l-1 6H6L5 3zM6 9h12v2a6 6 0 01-12 0V9zM9 21h6M12 19v2" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#fbbf24]">Dominate</h2>
+            <p class="text-5xl font-bold text-white tracking-tighter mt-2">$1,499<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
+            <p class="text-[#fbbf24] font-semibold mt-1">Domina tu mercado local</p>
+          </div>
+          <ul class="flex flex-col gap-5">
+            {["Gestión de hasta 10 publicaciones como anuncios","Campañas META + pruebas A/B","Gestión de Anuncios","Reporte Mensual con métricas detalladas"].map((item) => (
+              <li class="flex items-center gap-3">
+                <span class="w-[14px] h-[14px] rounded-full border border-[#fbbf24] flex items-center justify-center shrink-0">
+                  <svg class="w-[8px] h-[8px] text-[#fbbf24]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                </span>
+                <span class="text-[14px] font-medium text-slate-300 leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="text-xs text-slate-500 italic border-t border-white/5 pt-4">El cliente provee el contenido</p>
+          <a href="/contacto?plan=dominate-gestion" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#d97706] to-[#fbbf24] hover:brightness-110 text-base font-bold text-white tracking-wide transition-all flex items-center justify-center gap-2">Quiero dominar mi zona <span>→</span></a>
+        </div>
+
+        <!-- PREMIUM GESTIÓN (EXCLUSIVO) -->
+        <div class="relative bg-[#0f1115]/80 backdrop-blur-2xl border-2 border-[#FFD700]/60 rounded-2xl p-8 flex flex-col gap-6 shadow-[0_0_35px_rgba(255,215,0,0.2)]">
+          <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#B8860B] to-[#FFD700] text-black text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap">EXCLUSIVO</span>
+          <div class="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center">
+            <svg class="w-6 h-6 text-yellow-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="font-orbitron text-sm font-black uppercase tracking-[0.2em] text-[#FFD700]">Premium</h2>
+            <p class="text-5xl font-bold text-white tracking-tighter mt-2">$2,200<span class="text-base font-normal text-slate-400 ml-1">/mes</span></p>
+            <p class="text-[#FFD700] font-semibold mt-1">Presencia total en el mercado</p>
+          </div>
+          <ul class="flex flex-col gap-5">
+            {["Gestión de hasta 16 publicaciones como anuncios","Campañas META + Google Ads","Pruebas A/B avanzadas","Reporte Semanal con métricas detalladas","Account Manager dedicado"].map((item) => (
+              <li class="flex items-center gap-3">
+                <span class="w-[14px] h-[14px] rounded-full border border-[#FFD700] flex items-center justify-center shrink-0">
+                  <svg class="w-[8px] h-[8px] text-[#FFD700]" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                </span>
+                <span class="text-[14px] font-medium text-slate-300 leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="text-xs text-slate-500 italic border-t border-white/5 pt-4">El cliente provee el contenido</p>
+          <a href="/contacto?plan=premium-gestion" class="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-[#B8860B] to-[#FFD700] hover:brightness-110 text-base font-bold text-black tracking-wide transition-all flex items-center justify-center gap-2">Quiero el plan exclusivo <span>→</span></a>
         </div>
 
       </div>
@@ -240,6 +308,61 @@ import Footer from '../components/Footer.astro';
       </div>
 
     </section>
+
+    <script>
+      (function () {
+        var currentMode = 'completo';
+
+        function movePill(btn) {
+          var toggle = document.getElementById('pricing-toggle');
+          var pill = document.getElementById('toggle-pill');
+          var tRect = toggle.getBoundingClientRect();
+          var bRect = btn.getBoundingClientRect();
+          pill.style.left = (bRect.left - tRect.left) + 'px';
+          pill.style.width = bRect.width + 'px';
+        }
+
+        function setPricingMode(mode) {
+          if (mode === currentMode) return;
+          currentMode = mode;
+
+          var gridCompleto = document.getElementById('grid-completo');
+          var gridGestion = document.getElementById('grid-gestion');
+          var btnCompleto = document.getElementById('btn-completo');
+          var btnGestion = document.getElementById('btn-gestion');
+
+          var activeGrid = mode === 'completo' ? gridCompleto : gridGestion;
+          var inactiveGrid = mode === 'completo' ? gridGestion : gridCompleto;
+          var activeBtn = mode === 'completo' ? btnCompleto : btnGestion;
+          var inactiveBtn = mode === 'completo' ? btnGestion : btnCompleto;
+
+          movePill(activeBtn);
+          activeBtn.style.color = '#000';
+          inactiveBtn.style.color = '#94a3b8';
+
+          inactiveGrid.style.opacity = '0';
+          setTimeout(function () {
+            inactiveGrid.style.display = 'none';
+            activeGrid.style.display = 'grid';
+            requestAnimationFrame(function () {
+              requestAnimationFrame(function () {
+                activeGrid.style.opacity = '1';
+              });
+            });
+          }, 250);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+          var btnCompleto = document.getElementById('btn-completo');
+          var btnGestion = document.getElementById('btn-gestion');
+
+          btnCompleto.addEventListener('click', function () { setPricingMode('completo'); });
+          btnGestion.addEventListener('click', function () { setPricingMode('gestion'); });
+
+          movePill(btnCompleto);
+        });
+      })();
+    </script>
 
     <!-- ¿Para quién es esto? -->
     <section class="py-16 px-4 bg-zinc-950">
