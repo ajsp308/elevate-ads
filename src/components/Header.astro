@@ -15,7 +15,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     margin: 0;
     padding: 0;
   }
@@ -25,13 +24,8 @@
     font-size: 14px;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.4em;
-    color: #ffffff;
-    opacity: 0.25;
-    filter: blur(0.4px);
-    transform: scale(0.97);
-    transition: opacity 0.15s ease, filter 0.15s ease, transform 0.15s ease, letter-spacing 0.15s ease;
-    will-change: opacity, filter, transform, letter-spacing;
+    letter-spacing: 0.5em;
+    color: rgba(255, 255, 255, 0.85);
   }
 
   @media (max-width: 767px) {
@@ -44,24 +38,3 @@
     }
   }
 </style>
-
-<script>
-  (function () {
-    const wordmark = document.querySelector('.elevate-header__wordmark') as HTMLElement | null;
-    if (!wordmark) return;
-
-    const SCROLL_MAX = 200;
-
-    function update() {
-      const progress = Math.min(window.scrollY / SCROLL_MAX, 1);
-
-      wordmark.style.opacity = String(0.25 + 0.75 * progress);
-      wordmark.style.filter = `blur(${(1 - progress) * 0.4}px)`;
-      wordmark.style.transform = `scale(${0.97 + 0.03 * progress})`;
-      wordmark.style.letterSpacing = `${0.4 + 0.2 * progress}em`;
-    }
-
-    window.addEventListener('scroll', update, { passive: true });
-    update();
-  })();
-</script>
