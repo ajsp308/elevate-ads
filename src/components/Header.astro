@@ -1,0 +1,67 @@
+<header class="elevate-header">
+  <span class="elevate-header__wordmark">ELEVATE</span>
+</header>
+
+<style>
+  .elevate-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 56px;
+    background: #000000;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin: 0;
+    padding: 0;
+  }
+
+  .elevate-header__wordmark {
+    font-family: 'Orbitron', 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    color: #ffffff;
+    opacity: 0.25;
+    filter: blur(0.4px);
+    transform: scale(0.97);
+    transition: opacity 0.15s ease, filter 0.15s ease, transform 0.15s ease, letter-spacing 0.15s ease;
+    will-change: opacity, filter, transform, letter-spacing;
+  }
+
+  @media (max-width: 767px) {
+    .elevate-header {
+      height: 48px;
+    }
+
+    .elevate-header__wordmark {
+      font-size: 12px;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    const wordmark = document.querySelector('.elevate-header__wordmark') as HTMLElement | null;
+    if (!wordmark) return;
+
+    const SCROLL_MAX = 200;
+
+    function update() {
+      const progress = Math.min(window.scrollY / SCROLL_MAX, 1);
+
+      wordmark.style.opacity = String(0.25 + 0.75 * progress);
+      wordmark.style.filter = `blur(${(1 - progress) * 0.4}px)`;
+      wordmark.style.transform = `scale(${0.97 + 0.03 * progress})`;
+      wordmark.style.letterSpacing = `${0.4 + 0.2 * progress}em`;
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+</script>
